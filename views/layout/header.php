@@ -27,11 +27,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="router.php?r=book/index">Books</a>
                     </li>
-                    <?php if(!$auth -> isLoggedIn()){ ?>
+                    <?php if(!$auth -> isLoggedIn())
+                    { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="router.php?r=<?=constant('ROTA_LOGIN')?>">Login</a>
                     </li>
-                    <?php }else{ ?>
+                    <?php }
+                    else
+                    { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="router.php?r=<?=constant('ROTA_LOGOUT')?>">Logout (<?= $_SESSION['login'] ?>)</a>
                     </li>

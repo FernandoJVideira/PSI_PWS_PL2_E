@@ -14,11 +14,13 @@ $home = new HomeController();
 $book = new BookController();
 
 $route = '';
+$id = 0;
 
 if (isset($_GET['r']))
-{
     $route = $_GET['r'];
-}
+
+if(isset($_GET['id']))
+    $id = $_GET['id'];
 
 switch ($route) 
 {
@@ -33,6 +35,13 @@ switch ($route)
         break;
     case 'book/index':
         $book -> index();
+        break;
+    case 'book/show':
+        $book ->show($id);
+        break;
+    case 'book/edit':
+        break;
+    case 'book/destroy':
         break;
     default:
         $home -> index();
