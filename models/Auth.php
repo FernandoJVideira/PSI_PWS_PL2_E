@@ -4,14 +4,14 @@ class Auth
 {
     public function __construct()
     {
-        if(!isset($_SESSION)) 
-        { 
-            session_start(); 
+        if(!isset($_SESSION))
+        {
+            session_start();
         }
     }
     public function login($username, $password)
     {
-        if ($username == 'teste' && $password == '123') {
+        if ($username == 'fernando' && $password == '123') {
             $_SESSION['login'] = $username;
             return true;
         }

@@ -1,13 +1,12 @@
 <?php
 
-require_once "models/Book.php";
+require_once 'controllers/BaseController.php';
 
 class BookController extends BaseController
 {
     public function index()
     {
         $books = Book::all();
-        //mostrar a vista index passando os dados por parâmetro
 
         $this -> renderView('book/index.php', ['books' => $books]);
     }
@@ -16,13 +15,13 @@ class BookController extends BaseController
     {
         $book = Book::find([$id]);
         if (is_null($book)) {
-            $this->renderView('ERROR');
+            $this->renderView('ERROR'); //Todo criar pg erro
         } else {
-            $this->renderView('book/show.php', ['details' => $book]);
+            $this->renderView('book/show.php', ['bookDetails' => $book]);
         }
     }
 
-    public function create()
+    public function create($book)
     {
         //mostrar a vista create
     }
@@ -33,10 +32,10 @@ class BookController extends BaseController
         //your form name fields must match the ones of the table fields
         $book = new Book($_POST);
         if($book->is_valid()){
-            $book->save();
-            //redirecionar para o index
+        $book->save();
+        //redirecionar para o index
         } else {
-            //mostrar vista create passando o modelo como parâmetro
+        //mostrar vista create passando o modelo como parâmetro
         }
     }
 
@@ -44,9 +43,10 @@ class BookController extends BaseController
     {
         $book = Book::find([$id]);
         if (is_null($book)) {
-            //TODO redirect to standard error page
+            $this->renderView('ERROR');
         } else {
-            //mostrar a vista edit passando os dados por parâmetro
+        //mostrar a vista edit passando os dados por parâmetro
+            $this->renderView('book/edit.php', ['bookDetails' => $book]);
         }
     }
 
@@ -55,12 +55,12 @@ class BookController extends BaseController
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
         $book = Book::find([$id]);
-        $book->update_attributes($_POST);
+        $book->update_attributes(['name' => $_POST['name'], 'isbn' => $_POST['isbn']]);
         if($book->is_valid()){
-            $book->save();
-            //redirecionar para o index
+        $book->save();
+        $this->index();
         } else {
-            //mostrar vista edit passando o modelo como parâmetro
+            this->renderView('book/edit.php', ['bookDetails' => $book]);
         }
     }
 
@@ -68,6 +68,7 @@ class BookController extends BaseController
     {
         $book = Book::find([$id]);
         $book->delete();
+        
         //redirecionar para o index
     }
 }

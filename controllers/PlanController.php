@@ -1,4 +1,5 @@
 <?php
+require_once 'BaseAuthController.php';
 
 class PlanController extends BaseAuthController
 {
@@ -19,11 +20,10 @@ class PlanController extends BaseAuthController
     public function show()
     {
         require_once 'models/PlanCalculator.php';
-        
         $planCalculator = new PlanCalculator();
 
         $prest = $planCalculator->calculaPlano($_POST['montante'], $_POST['numero'], date("d-m-Y"));
 
-        $this -> renderView('plan/show.php', ['prest' => $prest]);
+        $this->renderView('plan/show.php', ['prest' => $prest]);
     }
 }

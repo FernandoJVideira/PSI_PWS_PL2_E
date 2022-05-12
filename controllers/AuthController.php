@@ -1,4 +1,7 @@
 <?php
+
+require_once 'BaseController.php';
+
 class AuthController extends BaseController
 {
     public function __construct()

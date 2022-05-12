@@ -1,8 +1,6 @@
 <?php
 
 require_once 'startup/boot.php';
-require_once 'controllers/BaseController.php';
-require_once 'controllers/BaseAuthController.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/PlanController.php';
 require_once 'controllers/HomeController.php';
@@ -14,13 +12,15 @@ $home = new HomeController();
 $book = new BookController();
 
 $route = '';
-$id = 0;
 
 if (isset($_GET['r']))
+{
     $route = $_GET['r'];
-
-if(isset($_GET['id']))
+}
+if (isset($_GET['id']))
+{
     $id = $_GET['id'];
+}
 
 switch ($route) 
 {
@@ -37,9 +37,13 @@ switch ($route)
         $book -> index();
         break;
     case 'book/show':
-        $book ->show($id);
+        $book -> show($id);
         break;
     case 'book/edit':
+        $book -> edit($id);
+        break;
+    case 'book/update':
+        $book -> update($id);
         break;
     case 'book/destroy':
         break;

@@ -1,3 +1,3 @@
-<?php
-    echo $details -> id;
+<?php 
+echo $bookDetails -> id;
 ?>

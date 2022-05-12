@@ -1,8 +1,6 @@
 <?php
 
-use ActiveRecord\Model;
-
-class Book extends Model
+class Book extends \ActiveRecord\Model
 {
     static $validates_presence_of = array(
         array('name'),
