@@ -7,8 +7,8 @@ class BookController extends BaseController
     public function index()
     {
         $books = Book::all();
-
-        $this -> renderView('book/index.php', ['books' => $books]);
+        
+        $this->renderView('book/index.php', ['books' => $books]);
     }
 
     public function show($id)
@@ -23,19 +23,20 @@ class BookController extends BaseController
 
     public function create($book)
     {
-        //mostrar a vista create
+        $genre = Genre::all();
+        $this->renderView('book/create.php', ['bookDetails' => $book, 'genres' => $genre]);
     }
 
     public function store()
     {
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
-        $book = new Book($_POST);
+        $book = new Book(['name' => $_POST['name'], 'isbn' => $_POST['isbn'], 'genre_id' => $_POST['genre_id']]);
         if($book->is_valid()){
         $book->save();
-        //redirecionar para o index
+        $this->redirectIndex();
         } else {
-        //mostrar vista create passando o modelo como parâmetro
+            $this->renderView('book/create.php', ['bookDetails' => $book]);
         }
     }
 
@@ -46,7 +47,8 @@ class BookController extends BaseController
             $this->renderView('ERROR');
         } else {
         //mostrar a vista edit passando os dados por parâmetro
-            $this->renderView('book/edit.php', ['bookDetails' => $book]);
+            $genre = Genre::all();
+            $this->renderView('book/edit.php', ['bookDetails' => $book, 'genres' => $genre]);
         }
     }
 
@@ -55,12 +57,12 @@ class BookController extends BaseController
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
         $book = Book::find([$id]);
-        $book->update_attributes(['name' => $_POST['name'], 'isbn' => $_POST['isbn']]);
+        $book->update_attributes(['name' => $_POST['name'], 'isbn' => $_POST['isbn'], 'genre_id' => $_POST['genre_id']]);
         if($book->is_valid()){
         $book->save();
-        $this->index();
+        $this->redirectIndex();
         } else {
-            this->renderView('book/edit.php', ['bookDetails' => $book]);
+            $this->renderView('book/edit.php', ['bookDetails' => $book]);
         }
     }
 
@@ -69,6 +71,11 @@ class BookController extends BaseController
         $book = Book::find([$id]);
         $book->delete();
         
-        //redirecionar para o index
+        $this->redirectIndex();
+    }
+
+    private function redirectIndex()
+    {
+        $this->redirectToRoute('book/index');
     }
 }

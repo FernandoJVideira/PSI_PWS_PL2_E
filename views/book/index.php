@@ -12,6 +12,9 @@
                 </th>
                 <th>
                     <h3>ISBN</h3>
+                </th>
+                <th>
+                    <h3>Genre</h3>
                 </th> 
                 <th>
                     <h3>User Actions</h3>
@@ -23,9 +26,12 @@
                     <td><?=$book->id?></td>
                     <td><?=$book->name?></td>
                     <td><?=$book->isbn?></td>
+                    <td><?= $book->genre->name ?></td>
                     <td>
                         <a href="router.php?r=book/show&id=<?=$book->id ?>" class="btn btn-info"
                             role="button">Show</a>
+                        <a href="router.php?r=chapter/index&id=<?=$book->id ?>" class="btn btn-info" 
+                            role="button">Chapters</a>
                         <a href="router.php?r=book/edit&id=<?=$book->id ?>" class="btn btn-info"
                             role="button">Edit</a>
                         <a href="router.php?r=book/destroy&id=<?=$book->id ?>" class="btn btn-warning"
@@ -42,4 +48,4 @@
             <a href="router.php?r=book/create" class="btn btn-info" role="button">New</a>
         </p>
     </div>
-</div> <!-- /row -->
+</div>
