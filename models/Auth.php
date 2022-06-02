@@ -1,5 +1,6 @@
 <?php
 
+require_once 'models/Users.php';
 class Auth
 {
     public function __construct()
@@ -11,8 +12,13 @@ class Auth
     }
     public function login($username, $password)
     {
-        if ($username == 'fernando' && $password == '123') {
+
+        $user = Users::find_by_username($username);
+        
+        if (!$user && $password == $user -> password) {
+
             $_SESSION['login'] = $username;
+
             return true;
         }
         return false;
