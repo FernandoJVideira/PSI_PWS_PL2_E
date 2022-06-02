@@ -10,13 +10,13 @@ class Auth
             session_start();
         }
     }
+    
     public function login($username, $password)
     {
+        $user = Users::find_by_username_and_password($username, sha1($password));
 
-        $user = Users::find_by_username($username);
-        
-        if (!$user && $password == $user -> password) {
-
+        if ($user)
+        {
             $_SESSION['login'] = $username;
 
             return true;

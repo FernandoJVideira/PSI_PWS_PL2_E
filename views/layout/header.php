@@ -29,7 +29,7 @@
                         <a class="nav-link" href="router.php?r=fatura/registar">Registar Fatura</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=user/registar">Registar Utilizador</a>
+                        <a class="nav-link" href="router.php?r=user/create">Registar Utilizador</a>
                     </li>
                     <?php } ?>
                 </ul>
