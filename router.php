@@ -21,11 +21,11 @@ if (isset($_GET['id']))
 switch ($route) 
 {
     case 'auth/login':
-        $auth -> authlogin();
+        $auth->authlogin();
         break;
     case 'auth/logout':
-        $auth -> authlogout();
+        $auth->authlogout();
         break;
     default:
-        $home -> index();
+        $home->index();
 }

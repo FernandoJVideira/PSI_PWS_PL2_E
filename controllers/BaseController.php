@@ -2,12 +2,16 @@
 
 class BaseController
 {
-    public function redirectToRoute($route = '')
+    public function redirectToRoute($route = '', $params =[])
     {
         $url = 'router.php';
         if($route)
         {
             $url = 'router.php?r='.$route;
+            foreach($params as $paramKey => $paramValue)
+            {
+                $url.='&'.$paramKey.'='.$paramValue;
+            }
         }
         header('Location: '.$url);
         exit(0);
