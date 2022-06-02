@@ -18,7 +18,7 @@ if (isset($_GET['id']))
     $id = $_GET['id'];
 }
 
-switch ($route) 
+switch ($route)
 {
     case 'auth/login':
         $auth->authlogin();
