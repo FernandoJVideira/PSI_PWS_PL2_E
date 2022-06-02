@@ -14,9 +14,12 @@ class UserController extends BaseController
     public function show($id)
     {
         $user = Users::find([$id]);
-        if (is_null($user)) {
-            $this->renderView('ERROR'); //Todo criar pg erro
-        } else {
+        if (is_null($user)) 
+        {
+            $this->renderView('ERROR'); //TODO: criar pg erro
+        } 
+        else 
+        {
             $this->renderView('user/show.php', ['userDetails' => $user]);
         }
     }
@@ -39,27 +42,29 @@ class UserController extends BaseController
          'morada' => $_POST['morada'],
          'cod_postal' => $_POST['codPostal'],
          'localidade' => $_POST['localidade'],
-         'role' => $_POST['type_user']]);
+         'role' => $_POST['type_user']
+        ]);
         
         if($user->is_valid())
         {
         $user->save();
-
-
         $this ->redirectToRoute();
-        } else {
-        //mostrar vista create passando o modelo como parâmetro
+
+        } 
+        else 
+        {
+            $this->renderView('user/create.php', ['user' => $user]);
         }
     }
 
-    /*public function edit($id)
+    public function edit($id)
     {
-        $book = Book::find([$id]);
-        if (is_null($book)) {
+        $user = Users::find([$id]);
+        if (is_null($user)) {
             $this->renderView('ERROR');
         } else {
         //mostrar a vista edit passando os dados por parâmetro
-            $this->renderView('book/edit.php', ['bookDetails' => $book]);
+            $this->renderView('user/edit.php', ['userDetails' => $user]);
         }
     }
 
@@ -67,21 +72,31 @@ class UserController extends BaseController
     {
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
-        $book = Book::find([$id]);
-        $book->update_attributes(['name' => $_POST['name'], 'isbn' => $_POST['isbn']]);
-        if($book->is_valid()){
-        $book->save();
-        $this->index();
+        $user = Users::find([$id]);
+        $user->update_attributes
+        (['username' => $_POST['username'],
+        'password' => sha1($_POST['password']), 
+        'email' => $_POST['email'], 
+        'telefone' => $_POST['telemovel'],
+        'nif' => $_POST['nif'],
+        'morada' => $_POST['morada'],
+        'cod_postal' => $_POST['codPostal'],
+        'localidade' => $_POST['localidade'],
+        'role' => $_POST['type_user']
+       ]);
+        if($user->is_valid()){
+        $user->save();
+        $this->redirectToRoute('user/index');
         } else {
-            $this->renderView('book/edit.php', ['bookDetails' => $book]);
+            $this->renderView('book/edit.php', ['userDetails' => $user]);
         }
     }
 
     public function delete($id)
     {
-        $book = Book::find([$id]);
-        $book->delete();
+        $user = Users::find([$id]);
+        $user->delete();
         
-        //redirecionar para o index
-    }*/
+        $this->redirectToRoute('user/index');
+    }
 }

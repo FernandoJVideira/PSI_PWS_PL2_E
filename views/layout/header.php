@@ -31,6 +31,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="router.php?r=user/create">Registar Utilizador</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="router.php?r=user/index">Gerir Users</a>
+                    </li>
                     <?php } ?>
                 </ul>
             </div>

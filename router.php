@@ -35,6 +35,18 @@ switch ($route)
     case 'user/store':
         $user->store();
         break;
+    case 'user/index':
+        $user->index();
+        break;
+    case 'user/edit':
+        $user->edit($id);
+        break;
+    case 'user/update':
+        $user->update($id);
+        break;
+    case 'user/delete':
+        $user->delete($id);
+        break;
     default:
         $home->index();
 }

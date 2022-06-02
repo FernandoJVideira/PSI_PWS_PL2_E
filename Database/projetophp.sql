@@ -1,4 +1,4 @@
-psi_pl2_pws_eCREATE SCHEMA IF NOT EXISTS psi_pl2_pws_e;
+CREATE SCHEMA IF NOT EXISTS psi_pl2_pws_e;
 USE psi_pl2_pws_e;
 
 DROP TABLE IF EXISTS `empresas`;
