@@ -100,3 +100,6 @@ class UserController extends BaseController
         $this->redirectToRoute('user/index');
     }
 }
+require_once 'models/Auth.php';
+            'password' => ($_POST['password'] != "" ? sha1($_POST['password']) : null),
+            'role' => isset($_POST['role']) ? $_POST['role'] : null
