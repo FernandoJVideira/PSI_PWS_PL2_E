@@ -1,6 +1,7 @@
 <?php
 
 require_once 'controllers/BaseController.php';
+require_once 'models/Auth.php';
 
 class UserController extends BaseController
 {
@@ -14,11 +15,11 @@ class UserController extends BaseController
     public function show($id)
     {
         $user = Users::find([$id]);
-        if (is_null($user)) 
+        if (is_null($user))
         {
             $this->renderView('ERROR'); //TODO: criar pg erro
-        } 
-        else 
+        }
+        else
         {
             $this->renderView('user/show.php', ['userDetails' => $user]);
         }
@@ -35,23 +36,23 @@ class UserController extends BaseController
         //your form name fields must match the ones of the table fields
         $user = new Users
         (['username' => $_POST['username'],
-         'password' => sha1($_POST['password']), 
-         'email' => $_POST['email'], 
-         'telefone' => $_POST['telemovel'],
+          'password' => ($_POST['password'] != "" ? sha1($_POST['password']) : null),
+         'email' => $_POST['email'],
+         'telefone' => $_POST['telefone'],
          'nif' => $_POST['nif'],
          'morada' => $_POST['morada'],
-         'cod_postal' => $_POST['codPostal'],
+         'cod_postal' => $_POST['cod_postal'],
          'localidade' => $_POST['localidade'],
-         'role' => $_POST['type_user']
+         'role' => isset($_POST['role']) ? $_POST['role'] : null
         ]);
-        
+
         if($user->is_valid())
         {
         $user->save();
         $this ->redirectToRoute();
 
-        } 
-        else 
+        }
+        else
         {
             $this->renderView('user/create.php', ['user' => $user]);
         }
@@ -75,14 +76,14 @@ class UserController extends BaseController
         $user = Users::find([$id]);
         $user->update_attributes
         (['username' => $_POST['username'],
-        'password' => sha1($_POST['password']), 
-        'email' => $_POST['email'], 
-        'telefone' => $_POST['telemovel'],
+        'password' => ($_POST['password'] != "" ? sha1($_POST['password']) : null),
+        'email' => $_POST['email'],
+        'telefone' => $_POST['telefone'],
         'nif' => $_POST['nif'],
         'morada' => $_POST['morada'],
-        'cod_postal' => $_POST['codPostal'],
+        'cod_postal' => $_POST['cod_postal'],
         'localidade' => $_POST['localidade'],
-        'role' => $_POST['type_user']
+        'role' => isset($_POST['role']) ? $_POST['role'] : null
        ]);
         if($user->is_valid()){
         $user->save();
@@ -96,10 +97,7 @@ class UserController extends BaseController
     {
         $user = Users::find([$id]);
         $user->delete();
-        
+
         $this->redirectToRoute('user/index');
     }
 }
-require_once 'models/Auth.php';
-            'password' => ($_POST['password'] != "" ? sha1($_POST['password']) : null),
-            'role' => isset($_POST['role']) ? $_POST['role'] : null
