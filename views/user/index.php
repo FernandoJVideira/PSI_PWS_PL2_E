@@ -1,12 +1,9 @@
 <h2 class="text-left top-space">Users</h2>
 <h2 class="top-space"></h2>
 <div class="row">
-    <div class="col-sm-12">
-        <table class="table tablestriped">
+    <div class="content-wrapper">
+        <table class="table table-striped">
             <thead>
-                <th>
-                    <h3>Id</h3>
-                </th>
                 <th>
                     <h3>Username</h3>
                 </th>
@@ -38,7 +35,6 @@
             <tbody>
                 <?php foreach ($users as $user) { ?>
                     <tr>
-                        <td><?= $user->id ?></td>
                         <td><?= $user->username ?></td>
                         <td><?= $user-> email?></td>
                         <td><?= $user-> telefone?></td>

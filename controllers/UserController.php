@@ -1,19 +1,20 @@
 <?php
 
 require_once 'controllers/BaseController.php';
+require_once 'models/User.php';
 
 class UserController extends BaseController
 {
     public function index()
     {
-        $users = Users::all();
+        $users = User::all();
 
         $this -> renderView('user/index.php', ['users' => $users]);
     }
 
     public function show($id)
     {
-        $user = Users::find([$id]);
+        $user = User::find([$id]);
         if (is_null($user)) 
         {
             $this->renderView('ERROR'); //TODO: criar pg erro
@@ -33,7 +34,7 @@ class UserController extends BaseController
     {
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
-        $user = new Users
+        $user = new User
         (['username' => $_POST['username'],
          'password' => sha1($_POST['password']), 
          'email' => $_POST['email'], 
@@ -44,12 +45,15 @@ class UserController extends BaseController
          'localidade' => $_POST['localidade'],
          'role' => $_POST['type_user']
         ]);
-        
+
+        //var_dump($user);
+        //die;
+
         if($user->is_valid())
         {
-        $user->save();
-        $this ->redirectToRoute();
 
+            $user->save();
+            $this ->redirectToRoute();
         } 
         else 
         {
@@ -59,7 +63,7 @@ class UserController extends BaseController
 
     public function edit($id)
     {
-        $user = Users::find([$id]);
+        $user = User::find([$id]);
         if (is_null($user)) {
             $this->renderView('ERROR');
         } else {
@@ -72,7 +76,7 @@ class UserController extends BaseController
     {
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
-        $user = Users::find([$id]);
+        $user = User::find([$id]);
         $user->update_attributes
         (['username' => $_POST['username'],
         'password' => sha1($_POST['password']), 
@@ -94,7 +98,7 @@ class UserController extends BaseController
 
     public function delete($id)
     {
-        $user = Users::find([$id]);
+        $user = User::find([$id]);
         $user->delete();
         
         $this->redirectToRoute('user/index');

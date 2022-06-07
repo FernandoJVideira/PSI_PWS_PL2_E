@@ -1,6 +1,6 @@
 <?php
 
-require_once 'models/Users.php';
+require_once 'models/User.php';
 class Auth
 {
     public function __construct()
@@ -13,7 +13,7 @@ class Auth
     
     public function login($username, $password)
     {
-        $user = Users::find_by_username_and_password($username, sha1($password));
+        $user = User::find_by_username_and_password($username, sha1($password));
 
         if ($user)
         {

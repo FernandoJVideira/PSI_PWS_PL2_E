@@ -1,7 +1,7 @@
 <section class="clean-block clean-form dark h-100">
         <div class="container">
             <div class="block-heading" style="padding-top: 0px;">
-                <h2 class="text-primary" style="">Editar User</h2>
+                <h2 class="text-primary">Editar User</h2>
                 <p></p>
             </div>
             <form action="router.php?r=user/update&id=<?= $userDetails->id; ?>" method="post" enctype="multipart/form-data" role="form">
@@ -39,10 +39,9 @@
                 <div class="form-group mb-3">
                   <label class="form-label">Tipo de Utilizador*</label>
                   <br>
-                  <select name="type_user" >
+                  <select name="type_user" value ></select>
                     <option value="cliente">Cliente</option>
                     <option value="funcionario">Funcionário</option>
-                    <option value="administrador">Administrador</option>
                   </select>
                 </div>
                 <hr style="margin-top: 30px;margin-bottom: 10px;">

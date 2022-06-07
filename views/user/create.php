@@ -1,10 +1,10 @@
     <section class="clean-block clean-form dark h-100">
         <div class="container">
             <div class="block-heading" style="padding-top: 0px;">
-                <h2 class="text-primary" style="">Registo de Utilizadores</h2>
+                <h2 class="text-primary">Registo de Utilizadores</h2>
                 <p></p>
             </div>
-            <form action="router.php?r=user/store" method="post" enctype="multipart/form-data" role="form">
+            <form action="router.php?r=user/store" method="post" enctype="multipart/form-data" role="form" novalidate>
                 <div class="form-group mb-3">
                   <label class="form-label">Username*</label>
                   <input class="form-control" type="text" name="username" required="">
@@ -30,7 +30,8 @@
                 </div>
                 <div class="form-group mb-3">
                   <label class="form-label">Código-Postal*</label>
-                  <input class="form-control" type="text" name="codPostal" required="">
+                  <input class="form-control" type="text" name="codPostal">
+                  <span>Mensagem de erro</span>
                 </div>
                 <div class="form-group mb-3">
                   <label class="form-label">Localidade*</label>
