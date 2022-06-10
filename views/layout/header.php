@@ -29,10 +29,19 @@
                         <a class="nav-link" href="router.php?r=fatura/registar">Registar Fatura</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="router.php?r=fatura/index">Gerir Faturas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="router.php?r=iva/create">Registar Iva</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="router.php?r=iva/index">Gerir Ivas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="router.php?r=user/create">Registar Utilizador</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=user/index">Gerir Users</a>
+                        <a class="nav-link" href="router.php?r=user/index">Gerir Utilizadores</a>
                     </li>
                     <?php } ?>
                 </ul>

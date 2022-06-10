@@ -25,7 +25,8 @@ class AuthController extends BaseController
             }
             else
             {
-                $this -> renderView('teste.php', [$_SESSION['login']]);
+                //$this -> renderView('teste.php', [$_SESSION['login']]);
+                echo "Tá tudo fodido!";
             }
         } 
         else

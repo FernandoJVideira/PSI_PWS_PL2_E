@@ -1,4 +1,3 @@
 <?php
-
-var_dump($_SESSION['login']);
+    //var_dump($_SESSION['login']);
  ?>

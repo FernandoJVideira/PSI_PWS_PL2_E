@@ -1,6 +1,7 @@
 <?php
 
 require_once 'models/User.php';
+
 class Auth
 {
     public function __construct()

@@ -64,7 +64,7 @@
       <div class="form-group mb-3">
         <label class="form-label">Tipo de Utilizador*</label>
         <span> <?php if (isset($users->errors)) {
-                  echo $users->errors->on('type_user');
+                  echo $users->errors->on('role');
                 } ?></span>
         <br>
         <select name="role">

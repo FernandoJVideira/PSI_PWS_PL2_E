@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-group mb-3">
                   <label class="form-label">Telemóvel*</label>
-                  <input class="form-control" type="tel" name="telemovel" value="<?= $userDetails->telefone; ?>" required="">
+                  <input class="form-control" type="tel" name="telefone" value="<?= $userDetails->telefone; ?>" required="">
                 </div>
                 <div class="form-group mb-3">
                   <label class="form-label">Nif*</label>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group mb-3">
                   <label class="form-label">Código-Postal*</label>
-                  <input class="form-control" type="text" name="codPostal" value="<?= $userDetails->cod_postal; ?>" required="">
+                  <input class="form-control" type="text" name="cod_postal" value="<?= $userDetails->cod_postal; ?>" required="">
                 </div>
                 <div class="form-group mb-3">
                   <label class="form-label">Localidade*</label>
@@ -39,7 +39,7 @@
                 <div class="form-group mb-3">
                   <label class="form-label">Tipo de Utilizador*</label>
                   <br>
-                  <select name="type_user" value ></select>
+                  <select name="role">
                     <option value="cliente">Cliente</option>
                     <option value="funcionario">Funcionário</option>
                   </select>
