@@ -10,8 +10,7 @@ class User extends ActiveRecord\Model
         array('nif', 'message' => 'Campo obrigatório!'),
         array('morada', 'message' => 'Campo obrigatório!'),
         array('cod_postal', 'message' => 'Campo obrigatório!'),
-        array('localidade', 'message' => 'Campo obrigatório!'),
-        array('role', 'message' =>  'Campo obrigatório!')
+        array('localidade', 'message' => 'Campo obrigatório!')
     );
 
     static $validates_uniqueness_of = array(
@@ -22,13 +21,19 @@ class User extends ActiveRecord\Model
     );
 
     static $validates_size_of = array(
-        array('username', 'within' => array(2, 10)),
-        //array('password', 'minimum' => 8),
-        //array('email', 'message' => 'It must be provided'),
-        //array('telefone', 'message' => 'It must be provided'),
-        //array('nif', 'message' => 'It must be provided'),
-        //array('morada', 'message' => 'It must be provided'),
-        //array('cod_postal', 'message' => 'It must be provided'),
-        //array('localidade', 'message' => 'It must be provided'),
+        array('username', 'within' => array(3, 10), 'message' => 'O Utilizador requer 3 a 10 caracteres!'),
+        array('password', 'within' => array(8, 20), 'message' => 'A Password requer 8 a 20 caracteres!'),
+        array('telefone', 'minimum' => 9, 'message' => 'Minimo de 9 digitos!'),
+        array('nif', 'is' => 9, 'message' => 'O NIF requer 9 digitos!'),
+        array('morada', 'minimum' => 3, 'message' => 'Minimo de 3 caracteres!')
+    );
+    static $validates_numericality_of = array(
+        array('telefone', 'only_integer' => true, 'message' => 'Formato incorreto!'),
+        array('nif', 'only_integer' => true, 'message' => 'Formato incorreto!')
+    );
+
+    static $validates_format_of = array(
+        array('email', 'with' => '/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/', 'message' => 'Formato incorreto!'),
+        array('cod_postal', 'with' => '/^[0-9]{4}(?:-[0-9]{3})?$/', 'message' => 'Formato incorreto!')
     );
 }

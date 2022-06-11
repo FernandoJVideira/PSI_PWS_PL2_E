@@ -1,4 +1,4 @@
-<?php $auth = new Auth();?>
+<?php $auth = new Auth(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,19 +15,22 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="router.php"><?=constant('NOME_APP')?></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <a class="navbar-brand" href="router.php"><?= constant('NOME_APP') ?></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <?php if($auth -> isLoggedIn())
-                    { ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=fatura/registar">Registar Fatura</a>
-                    </li>
+                    <?php if ($auth->isLoggedIn() && $_SESSION['login'][2] != 'cliente') { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=fatura/registar">Registar Fatura</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=user/create">Registar Utilizador</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=user/index">Gerir Users</a>
+                        </li>
                     <li class="nav-item">
                         <a class="nav-link" href="router.php?r=fatura/index">Gerir Faturas</a>
                     </li>
@@ -37,28 +40,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="router.php?r=iva/index">Gerir Ivas</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=user/create">Registar Utilizador</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=user/index">Gerir Utilizadores</a>
-                    </li>
                     <?php } ?>
                 </ul>
             </div>
             <ul class="navbar-nav ml-auto flex-nowrap">
-            <?php if(!$auth -> isLoggedIn())
-                    {?>
+                <?php if (!$auth->isLoggedIn()) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=<?=constant('ROTA_LOGIN')?>">Login</a>
+                        <a class="nav-link" href="router.php?r=<?= constant('ROTA_LOGIN') ?>">Login</a>
                     </li>
-                    <?php }
-                    else
-                    { ?>
+                <?php } else { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=<?=constant('ROTA_LOGOUT')?>">Logout (<?= $_SESSION['login']?>)</a>
+                        <a class="nav-link" href="router.php?r=<?= constant('ROTA_LOGOUT') ?>">Logout (<?= $_SESSION['login'][0] ?>)</a>
                     </li>
-                    <?php } ?>
-        </ul>
+                <?php } ?>
+            </ul>
         </div>
     </nav>

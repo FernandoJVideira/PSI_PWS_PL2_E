@@ -4,6 +4,13 @@
             <div class="col col-6">
                 <div class="mb-3">
                     <label for="inputUsername" class="form-label">Username:</label>
+                    <?php
+                    if (isset($erro)) {
+                        echo "<span class='alerta'>";
+                        echo "Username ou password incorretos!";
+                        echo '</span>';
+                    }
+                    ?>
                     <input type="text" class="form-control" id="inputUsername" name="username" required>
                     <div class="invalid-feedback">
                         Campo obrigatório!
