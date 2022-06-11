@@ -4,10 +4,12 @@ require_once 'startup/boot.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/UserController.php';
 require_once 'controllers/HomeController.php';
+require_once 'controllers/ProdutoController.php';
 
 $auth = new AuthController();
 $home = new HomeController();
 $user = new UserController();
+$product = new ProdutoController();
 
 $route = '';
 
@@ -46,6 +48,25 @@ switch ($route)
         break;
     case 'user/delete':
         $user->delete($id);
+        break;
+    //Ptoduto
+    case 'produto/create':
+        $product->create();
+        break;
+    case 'produto/store':
+        $product->store();
+        break;
+    case 'produto/index':
+        $product->index();
+        break;
+    case 'produto/edit':
+        $product->edit($id);
+        break;
+    case 'produto/update':
+        $product->update($id);
+        break;
+    case 'produto/delete':
+        $product->delete($id);
         break;
     default:
         $home->index();

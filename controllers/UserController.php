@@ -87,7 +87,7 @@ class UserController extends BaseController
         $user->save();
         $this->redirectToRoute('user/index');
         } else {
-            $this->renderView('book/edit.php', ['userDetails' => $user]);
+            $this->renderView('user/edit.php', ['userDetails' => $user]);
         }
     }
 
