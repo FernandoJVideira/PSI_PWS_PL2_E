@@ -48,7 +48,7 @@ class FaturaController extends BaseController
         } 
         else 
         {
-            $this->renderView('user/create.php', ['fatura' => $fatura]);
+            $this->renderView('fatura/create.php', ['fatura' => $fatura]);
         }
     }
 
@@ -78,9 +78,9 @@ class FaturaController extends BaseController
         if($fatura->is_valid())
         {
             $fatura->save();
-            $this->redirectToRoute('user/index');
+            $this->redirectToRoute('fatura/index');
         } else {
-            $this->renderView('book/edit.php', ['faturaDetails' => $fatura]);
+            $this->renderView('fatura/edit.php', ['faturaDetails' => $fatura]);
         }
     }
 
@@ -89,6 +89,6 @@ class FaturaController extends BaseController
         $fatura = Fatura::find([$id]);
         $fatura->delete();
         
-        $this->redirectToRoute('user/index');
+        $this->redirectToRoute('fatura/index');
     }
 }
