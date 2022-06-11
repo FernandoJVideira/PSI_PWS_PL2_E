@@ -2,8 +2,7 @@
 
 require_once 'vendor/autoload.php';
 
-ActiveRecord\Config::initialize(function($cfg)
-{
+ActiveRecord\Config::initialize(function ($cfg) {
     $cfg->set_model_directory('./models');
     $cfg->set_connections(
     array(

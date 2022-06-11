@@ -78,6 +78,9 @@ switch ($route) {
 
         //Home
 
+    case 'home/erro':
+        $home->erro();
+        break;
     default:
         $home->index();
 }
