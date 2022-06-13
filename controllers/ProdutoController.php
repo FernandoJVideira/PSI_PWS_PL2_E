@@ -17,7 +17,7 @@ class ProdutoController extends BaseController
         $produto = Produto::find([$id]);
         if (is_null($produto)) 
         {
-            $this->renderView('ERROR'); //TODO: criar pg erro
+            $this->redirectToRoute('home/erro'); //TODO: rework pg erro
         } 
         else 
         {
@@ -57,7 +57,7 @@ class ProdutoController extends BaseController
     {
         $produto = Produto::find([$id]);
         if (is_null($produto)) {
-            $this->renderView('ERROR');
+            $this->redirectToRoute('home/erro');
         } else {
         //mostrar a vista edit passando os dados por parâmetro
             $this->renderView('produto/edit.php', ['produto' => $produto]);

@@ -16,7 +16,7 @@ class FaturaController extends BaseController
         $fatura = Fatura::find([$id]);
         if (is_null($fatura)) 
         {
-            $this->renderView('ERROR'); //TODO: criar pg erro
+            $this->redirectToRoute('home/erro'); //TODO: rework pg erro
         } 
         else 
         {

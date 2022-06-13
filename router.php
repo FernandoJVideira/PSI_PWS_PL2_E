@@ -7,6 +7,7 @@ require_once 'controllers/HomeController.php';
 require_once 'controllers/IvaController.php';
 require_once 'controllers/FaturaController.php';
 require_once 'controllers/ProdutoController.php';
+require_once 'controllers/LinhaController.php';
 
 $auth = new AuthController();
 $home = new HomeController();

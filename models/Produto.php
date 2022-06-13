@@ -12,4 +12,8 @@ class Produto extends ActiveRecord\Model
         array('referencia', 'within' => array(5,12)),
         array('descricao', 'within' => array(10,250)),
     );
+
+    static $has_many = array(
+        array('linhas'),
+    );
 }
