@@ -22,7 +22,7 @@ class User extends ActiveRecord\Model
 
     static $validates_size_of = array(
         array('username', 'within' => array(3, 10), 'message' => 'O Utilizador requer 3 a 10 caracteres!'),
-        array('password', 'within' => array(8, 20), 'message' => 'A Password requer 8 a 20 caracteres!'),
+        array('password', 'within' => array(8, 45), 'message' => 'A Password requer 8 a 45 caracteres!'),
         array('telefone', 'minimum' => 9, 'message' => 'Minimo de 9 digitos!'),
         array('nif', 'is' => 9, 'message' => 'O NIF requer 9 digitos!'),
         array('morada', 'minimum' => 3, 'message' => 'Minimo de 3 caracteres!')
@@ -33,7 +33,7 @@ class User extends ActiveRecord\Model
     );
 
     static $validates_format_of = array(
-        array('email', 'with' => '/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/', 'message' => 'Formato incorreto!'),
+        array('email', 'with' => '/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,5}$/', 'message' => 'Formato incorreto!'),
         array('cod_postal', 'with' => '/^[0-9]{4}(?:-[0-9]{3})?$/', 'message' => 'Formato incorreto!')
     );
 }

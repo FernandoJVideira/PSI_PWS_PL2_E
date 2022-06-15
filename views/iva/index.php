@@ -17,9 +17,9 @@
             <tbody>
                 <?php foreach ($ivas as $iva) { ?>
                     <tr>
-                        <td><?= $iva-> percentagem ?></td>
-                        <td><?= $iva-> descricao?></td>
-                        <td><?= $iva-> em_vigor?></td>
+                        <td><?= $iva->percentagem ?></td>
+                        <td><?= $iva->descricao ?></td>
+                        <td><?= $iva->em_vigor ?></td>
                         <td>
                             <a href="router.php?r=iva/edit&id=<?= $iva->id ?>" class="btn btn-info" role="button">Edit</a>
                             <a href="router.php?r=iva/delete&id=<?= $iva->id ?>" class="btn btn-warning" role="button">Delete</a>
@@ -29,4 +29,4 @@
             </tbody>
         </table>
     </div>
-</div> <!-- /row -->
+</div>

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="public/css/Ludens-Users---25-After-Register.css">
     <link rel="stylesheet" href="public/fonts/fontawesome-all.min.css">
     <link href="public/css/styles.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -23,29 +24,23 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php if ($auth->isLoggedIn() && $_SESSION['login'][2] != 'cliente') { ?>
                         <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=fatura/registar">Registar Fatura</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="router.php?r=user/create">Registar Utilizador</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="router.php?r=user/index">Gerir Users</a>
                         </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=fatura/index">Gerir Faturas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=iva/create">Registar Iva</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=iva/index">Gerir Ivas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=produto/create">Registar Produto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=produto/index">Gerir Produtos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="router.php?r=fatura/create">Criar Fatura</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=fatura/index">Gerir Faturas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=iva/create">Registar Iva</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=iva/index">Gerir Ivas</a>
+                        </li>
                     <?php } ?>
                 </ul>
             </div>

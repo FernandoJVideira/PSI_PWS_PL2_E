@@ -4,7 +4,7 @@
       <h2 class="text-primary">Editar Utilizador</h2>
       <p></p>
     </div>
-    <form action="router.php?r=user/update?id=<?= $user->id ?>" method="post" enctype="multipart/form-data" role="form">
+    <form action="router.php?r=user/update&id=<?= $user->id ?>" method="post" enctype="multipart/form-data" role="form">
       <div class="form-group mb-3">
         <label class="form-label">Username*</label>
         <?php

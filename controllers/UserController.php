@@ -10,9 +10,8 @@ class UserController extends BaseController
     public function index()
     {
         $base = new BaseAuthController();
-
-        $base->loginFilter();
         $user = null;
+        $this->restricted();
 
         if ($base->userData(2) == 'funcionario') {
             $users = User::find('all', array('conditions' => array('role =?', 'cliente')));
@@ -25,9 +24,11 @@ class UserController extends BaseController
 
     public function show($id)
     {
+        $this->restricted();
+
         $user = User::find([$id]);
         if (is_null($user)) {
-            $this->renderView('ERROR'); //TODO: criar pg erro
+            $this->redirectToRoute('user/index');
         } else {
             $this->renderView('user/show.php', ['userDetails' => $user]);
         }
@@ -35,18 +36,21 @@ class UserController extends BaseController
 
     public function create()
     {
-        $base = new BaseAuthController();
-        $base->loginFilter();
-
+        $this->restricted();
         $this->renderView('user/create.php');
     }
 
+
     public function store()
     {
-        $base = new BaseAuthController();
-        $base->loginFilter();
+        $this->restricted();
+
+        if ($_POST == null)
+            $this->redirectToRoute('user/create');
+
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
+
         $user = new User([
             'username' => $_POST['username'],
             'password' => ($_POST['password'] != "" ? $_POST['password'] : null),
@@ -60,8 +64,9 @@ class UserController extends BaseController
         ]);
 
         if ($user->is_valid()) {
-            $user->password = sha1($_POST['password']);
-            $user->save(false);
+            var_dump($user);
+            $user->update_attribute('password', sha1($_POST['password']));
+            $user->save();
             $this->redirectToRoute('user/index');
         } else {
             $this->renderView('user/create.php', ['users' => $user]);
@@ -71,7 +76,9 @@ class UserController extends BaseController
     public function edit($id)
     {
         $base = new BaseAuthController();
-        $base->loginFilter();
+        $this->restricted();
+        if (!isset($id))
+            $this->redirectToRoute('user/index');
 
         try {
             $user = User::find([$id]);
@@ -79,7 +86,7 @@ class UserController extends BaseController
             $this->redirectToRoute('home/erro');
         }
 
-        if ($user->role != 'cliente'  && $user->id != $base->userData(1) && $base->userData(2) != 'administrador') {
+        if (($user->id != $base->userData(1) && $base->userData(2) != 'administrador') && $user->role != 'cliente') {
             $this->redirectToRoute('home/erro');
         }
         //mostrar a vista edit passando os dados por parâmetro
@@ -89,7 +96,7 @@ class UserController extends BaseController
     public function update($id)
     {
         $base = new BaseAuthController();
-        $base ->loginFilter();
+        $this->restricted();
 
         try {
             $user = User::find([$id]);
@@ -97,26 +104,21 @@ class UserController extends BaseController
             $this->redirectToRoute('user/index');
         }
 
-        if ($user->role != 'cliente'  && $user->id != $base->userData(1) && $base->userData(2) != 'administrador') {
-            $this->redirectToRoute('user/index');
+        if (($user->id != $base->userData(1) && $base->userData(2) != 'administrador') && $user->role != 'cliente') {
+            $this->redirectToRoute('home/erro');
         }
 
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
+        foreach ($_POST as $field) {
+            $key = array_search($field, $_POST);
+            if ($_POST[$key] != "") {
+                $user->update_attribute($key, $_POST[$key]);
+            }
+        }
 
-        $user->update_attributes([
-            'username' => isset($_POST['username']) ? $_POST['username'] : null,
-            'password' => ($_POST['password'] != "" ? $_POST['password'] : null),
-            'email' => isset($_POST['email']) ? $_POST['email'] : null,
-            'telefone' => isset($_POST['telefone']) ? $_POST['telefone'] : null,
-            'nif' => isset($_POST['nif']) ? $_POST['nif'] : null,
-            'morada' => isset($_POST['morada']) ? $_POST['morada'] : null,
-            'cod_postal' => isset($_POST['cod_postal']) ? $_POST['cod_postal'] : null,
-            'localidade' => isset($_POST['localidade']) ? $_POST['localidade'] : null,
-            'role' => isset($_POST['role']) && $_POST['role'] != 'administrador' ? $_POST['role'] : $user->role
-        ]);
         if ($user->is_valid()) {
-            $user->password = sha1($_POST['password']);
+            //$user->update_attribute('password', sha1($_POST['password']));
             $user->save();
             $this->redirectToRoute('user/index');
         } else {
@@ -127,7 +129,9 @@ class UserController extends BaseController
     public function delete($id)
     {
         $base = new BaseAuthController();
-        $base->loginFilter();
+        $this->restricted();
+        if (!isset($id))
+            $this->redirectToRoute('user/index');
         try {
             $user = User::find([$id]);
         } catch (Exception $e) {
@@ -140,5 +144,12 @@ class UserController extends BaseController
         $user->delete();
 
         $this->redirectToRoute('user/index');
+    }
+
+    private function restricted()
+    {
+        $base = new BaseAuthController();
+        if ($base->userData(2) == 'cliente')
+            $this->redirectToRoute('home/erro');
     }
 }
