@@ -25,4 +25,8 @@ class Iva extends ActiveRecord\Model
     static $validates_uniqueness_of = array(
         array('percentagem', 'message' => 'já existe na tabela!')
     );
+
+    static $has_many = array(
+        array('produtos'),
+    );
 }

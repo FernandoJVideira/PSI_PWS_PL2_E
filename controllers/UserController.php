@@ -61,7 +61,7 @@ class UserController extends BaseController
 
         if ($user->is_valid()) {
             $user->password = sha1($_POST['password']);
-            $user->save();
+            $user->save(false);
             $this->redirectToRoute('user/index');
         } else {
             $this->renderView('user/create.php', ['users' => $user]);

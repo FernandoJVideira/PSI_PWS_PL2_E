@@ -8,4 +8,10 @@ class Fatura extends ActiveRecord\Model
         array('valor_preco_total', 'message' => 'It must be provided'),
         array('estado', 'message' => 'It must be provided')
     );
+
+    static $has_many = array(
+        
+        array('linhas')
+    
+    );
 }

@@ -2,14 +2,15 @@
 
 require_once 'controllers/BaseController.php';
 require_once 'models/Produto.php';
+require_once 'models/Iva.php';
 
 class ProdutoController extends BaseController
 {
     public function index()
     {
-        $produto = Produto::all();
+        $produtos = Produto::all();
 
-        $this -> renderView('produto/index.php', ['produto' => $produto]);
+        $this -> renderView('produto/index.php', ['produtos' => $produtos]);
     }
 
     public function show($id)
@@ -27,7 +28,8 @@ class ProdutoController extends BaseController
 
     public function create()
     {
-        $this->renderView('produto/create.php');
+        $ivas = Iva::all();
+        $this->renderView('produto/create.php', ['ivas' => $ivas]);
     }
 
     public function store()
@@ -39,14 +41,14 @@ class ProdutoController extends BaseController
          'descricao' => $_POST['descricao'], 
          'preco_unid' => $_POST['preco_unid'], 
          'quant_stock' => $_POST['quant_stock'],
+         'iva_id' => $_POST['iva_id'],
         ]);
         
         if($produto->is_valid())
         {
             $produto->save();
             $this ->redirectToRoute();
-
-        } 
+        }
         else 
         {
             $this->renderView('produto/create.php', ['produto' => $produto]);

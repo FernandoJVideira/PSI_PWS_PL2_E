@@ -92,7 +92,7 @@ CREATE TABLE `produtos` (
 -- Table structure for table `linha_faturas`
 --
 
-DROP TABLE IF EXISTS `linha_faturas`;
+DROP TABLE IF EXISTS `linhas`;
 CREATE TABLE `linha_faturas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `quantidade` int(50) NOT NULL,
@@ -102,4 +102,5 @@ CREATE TABLE `linha_faturas` (
   `produto_id` int(11) NOT NULL,
   CONSTRAINT pk_li_faturas_id PRIMARY KEY (`id`),
   CONSTRAINT fk_li_faturas_idFatu FOREIGN KEY (`fatura_id`) REFERENCES faturas(`id`)
+  CONSTRAINT fk_li_faturas_idProd FOREIGN KEY (`produto_id`) REFERENCES produtos(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

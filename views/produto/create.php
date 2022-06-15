@@ -17,7 +17,8 @@
                       echo $produto->errors->on('referencia');
                     }
                   } ?></span>
-        <input class="form-control" type="text" name="referencia" value="<?php if (isset($produto->referencia)) echo $produto->referencia ?>">
+        <input class="form-control" type="text" name="referencia"
+          value="<?php if (isset($produto->referencia)) echo $produto->referencia ?>">
       </div>
       <div class="form-group mb-3">
         <label class="form-label">Nome Produto*</label>
@@ -31,7 +32,8 @@
                       echo $produto->errors->on('descricao');
                     }
                   } ?></span>
-        <input class="form-control" type="text" name="descricao" value="<?php if (isset($produto->descricao)) echo $produto->descricao ?>">
+        <input class="form-control" type="text" name="descricao"
+          value="<?php if (isset($produto->descricao)) echo $produto->descricao ?>">
       </div>
       <div class="form-group mb-3">
         <label class="form-label">Preço Unitário*</label>
@@ -45,7 +47,22 @@
                       echo $produto->errors->on('preco_unid');
                     }
                   } ?></span>
-        <input class="form-control" type="text" name="preco_unid" value="<?php if (isset($produto->preco_unid)) echo $produto->preco_unid ?>">
+        <input class="form-control" type="text" name="preco_unid"
+          value="<?php if (isset($produto->preco_unid)) echo $produto->preco_unid ?>">
+      </div>
+      <div class="form-group mb3">
+        <label class="form-label">Taxa de Iva*</label> 
+        <br>
+        <select name="iva_id">
+          <?php if(is_array($ivas)){
+            foreach($ivas as $iva){
+                echo '<option value="'.$iva->id.'">'.$iva->percentagem.'</option>';
+            }
+        } 
+        else{
+            echo '<option value="'.$ivas->id.'">'.$ivas->percentagem.'</option>';
+        }?>
+        </select>
       </div>
       <div class="form-group mb-3">
         <label class="form-label">Quantidade em Stock*</label>
@@ -59,10 +76,12 @@
                       echo $produto->errors->on('quant_stock');
                     }
                   } ?></span>
-        <input class="form-control" type="text" name="quant_stock" value="<?php if (isset($produto->quant_stock)) echo $produto->quant_stock ?>">
+        <input class="form-control" type="text" name="quant_stock"
+          value="<?php if (isset($produto->quant_stock)) echo $produto->quant_stock ?>">
       </div>
       <hr style="margin-top: 30px;margin-bottom: 10px;">
-      <div class="form-group mb-3"><button class="btn btn-primary d-block w-100" type="submit"><i class="fas fa-save"></i>&nbsp;Guardar</button></div>
+      <div class="form-group mb-3"><button class="btn btn-primary d-block w-100" type="submit"><i
+            class="fas fa-save"></i>&nbsp;Guardar</button></div>
     </form>
   </div>
 </section>

@@ -5,63 +5,71 @@ require_once 'models/Linha.php';
 require_once 'models/Produto.php';
 require_once 'models/Fatura.php';
 
-class LinhaFaturaController extends BaseController
+class LinhaController extends BaseController
 {
     public function index()
     {
-        $linhaFatura = Linha::all();
+        $linhas = Linha::all();
 
-        $this -> renderView('linhaFatura/index.php', ['linhaFatura' => $linhaFatura]);
+        $this -> renderView('linha/index.php', ['linhas' => $linhas]);
     }
 
     public function show($id)
     {
-        $linhaFatura = Linha::find([$id]);
-        if (is_null($linhaFatura)) 
+        $linha = Linha::find([$id]);
+        if (is_null($linha)) 
         {
             $this->renderView('home/erro'); //TODO: rework pg erro
         } 
         else 
         {
-            $this->renderView('linhaFatura/show.php', ['linhaFatura' => $linhaFatura]);
+            $this->renderView('linha/show.php', ['linha' => $linha]);
         }
     }
 
-    public function create()
+    public function create($idFatura)
     {
-        $this->renderView('linhaFatura/create.php');
+        $produtos = Produto::all();
+        $fatura = Fatura::find([$idFatura]);
+
+        $this->renderView('linha/create.php', ['produtos' => $produtos, 'fatura' => $fatura]);
     }
 
-    public function store()
+    public function store($idFatura)
     {
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
-        $prodRef = $_POST['referencia'];
-        $prodID = Produto::find_by_referencia($prodRef);
 
-        $linhaFatura = new Linha
-        (['referencia' => $_POST['referencia'],
-         'quantidade' => $_POST['descricao'], 
-         'prod_id' => $prodID
+        $produto = Produto::find([$_POST['produto_id']]);
+        $iva = Iva::find([$produto->iva_id]);
+
+        $valorIvaLinha = $_POST['quantidade'] * $produto->preco_unid * ($iva->percentagem / 100);
+
+        $linha = new Linha
+        (['quantidade' => $_POST['quantidade'], 
+         'produto_id' => $_POST['produto_id'],
+         'valor_uni' => $produto->preco_unid,
+         'valor_iva' => $valorIvaLinha,
+         'fatura_id' => $idFatura,
         ]);
         
-        if($linhaFatura->is_valid())
+        if($linha->is_valid())
         {
-            $linhaFatura->save();
-            $this ->redirectToRoute();
+            $linha->save();
+            $this ->redirectToRoute('fatura/edit&id='.$idFatura);
 
         } 
         else 
         {
-            $this->renderView('linhaFatura/create.php', ['linhaFatura' => $linhaFatura]);
+            $this->renderView('linha/create.php', ['linha' => $linha]);
         }
     }
 
     public function delete($id)
     {
-        $linhaFatura = Linha::find([$id]);
-        $linhaFatura->delete();
+        $linha = Linha::find([$id]);
+        $linha->delete();
         
-        $this->redirectToRoute('produto/index');
+        $this->redirectToRoute('linha/index');
     }
 }

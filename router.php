@@ -14,6 +14,7 @@ $home = new HomeController();
 $user = new UserController();
 $product = new ProdutoController();
 $iva = new IvaController();
+$linha = new LinhaController();
 $fatura = new FaturaController();
 
 $route = '';
@@ -84,7 +85,9 @@ switch ($route) {
     case 'home/erro':
         $home->erro();
         break;
-    //Ptoduto
+        
+        //Ptoduto
+
     case 'produto/create':
         $product->create();
         break;
@@ -102,6 +105,38 @@ switch ($route) {
         break;
     case 'produto/delete':
         $product->delete($id);
+        break;
+
+        //LinhaFatura
+
+    case 'linha/create':
+        $linha->create($id);
+        break;
+    case 'linha/store':
+        $linha->store($id);
+        break;
+    case 'linha/delete':
+        $linha->delete($id);
+        break;
+    
+        //Fatura
+
+    case 'fatura/index':
+        $fatura->index();
+        break;
+    case 'fatura/create':
+        $fatura->create();
+        break;
+    case 'fatura/store':
+        $fatura->store();
+        break;
+    case 'fatura/edit':
+        $fatura->edit($id);
+        break;
+    case 'fatura/update':
+        $fatura->update($id);
+    case 'fatura/delete':
+        $fatura->create();
         break;
     default:
         $home->index();

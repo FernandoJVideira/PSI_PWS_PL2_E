@@ -19,7 +19,7 @@ class BaseAuthController extends BaseController
      * Devolve os dados armazenados na $_SESSION['login']
      * @param $field int position of the array
      * @return string [0] nome
-     * @return int [1] id string
+     * @return int [1] id
      * @return string [2] role
      */
 

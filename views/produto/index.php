@@ -14,15 +14,22 @@
                     <h3>Preço Unitário</h3>
                 </th>
                 <th>
+                    <h3>Taxa de Iva</h3>
+                </th>
+                <th>
                     <h3>Quantidade em Stock</h3>
                 </th>
                </thead>
             <tbody>
-                <?php foreach ($produto as $produto) { ?>
+                <?php foreach ($produtos as $produto) { 
+                    $iva = Iva::find([$produto->iva_id]);
+                    ?>
+
                     <tr>
                         <td><?= $produto->referencia ?></td>
                         <td><?= $produto->descricao?></td>
                         <td><?= $produto->preco_unid?></td>
+                        <td><?= $iva->percentagem?></td>
                         <td><?= $produto->quant_stock?></td>
                         <td>
                             <a href="router.php?r=produto/edit&id=<?= $produto->id ?>" class="btn btn-info" role="button">Edit</a>

@@ -23,9 +23,6 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php if ($auth->isLoggedIn() && $_SESSION['login'][2] != 'cliente') { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="router.php?r=fatura/registar">Registar Fatura</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="router.php?r=user/create">Registar Utilizador</a>
                         </li>
                         <li class="nav-item">
@@ -45,6 +42,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="router.php?r=produto/index">Gerir Produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="router.php?r=fatura/create">Criar Fatura</a>
                     </li>
                     <?php } ?>
                 </ul>
