@@ -4,8 +4,7 @@
       <h2 class="text-primary">Linha Fatura</h2>
       <p></p>
     </div>
-    <form action="router.php?r=linha/store&id= <?= $fatura->id ?>" method="post" enctype="multipart/form-data"
-      role="form">
+    <form action="router.php?r=linha/store&id=<?= $fatura->id ?>" method="post" enctype="multipart/form-data" role="form">
       <div class="form-group mb-3">
         <label class="form-label">Quantidade*</label>
         <?php
@@ -19,33 +18,31 @@
           echo '</span>';
         }
         ?>
-        <input class="form-control" type="text" name="quantidade"
-          value="<?php if (isset($linha->quantidade)) echo $linha->quantidade ?>">
+        <input class="form-control" type="text" name="quantidade" value="<?php if (isset($linha->quantidade)) echo $linha->quantidade ?>">
       </div>
 
       <div class="form-group mb-3">
         <label class="form-label">Produto*</label>
         <?php
-          if (isset($linha->errors)) {
-            echo "<span class='alerta'>";
-            if (is_array($linha->errors->on('role'))) {
-              echo $linha->errors->on('role')[0];
-            } else {
-              echo $linha->errors->on('role');
-            }
-            echo '</span>';
+        if (isset($linha->errors)) {
+          echo "<span class='alerta'>";
+          if (is_array($linha->errors->on('produto_id'))) {
+            echo $linha->errors->on('produto_id')[0];
+          } else {
+            echo $linha->errors->on('produto_id');
           }
-          ?>
+          echo '</span>';
+        }
+        ?>
         <br>
         <select name="produto_id">
-          <?php foreach($produtos as $produto){?>
-          <option value="<?= $produto->id ?>"> <?= $produto->descricao ?></option>
+          <?php foreach ($produtos as $produto) { ?>
+            <option value="<?= $produto->id ?>" <?php if (isset($linha->produto_id)) if ($produto->id  ==  $linha->produto_id) echo "selected" ?>> <?= $produto->descricao ?></option>
           <?php } ?>
         </select>
       </div>
       <hr style="margin-top: 30px;margin-bottom: 10px;">
-      <div class="form-group mb-3"><button class="btn btn-primary d-block w-100" type="submit"><i
-            class="fas fa-save"></i>&nbsp;Guardar</button></div>
+      <div class="form-group mb-3"><button class="btn btn-primary d-block w-100" type="submit"><i class="fas fa-save"></i>&nbsp;Guardar</button></div>
     </form>
   </div>
 </section>

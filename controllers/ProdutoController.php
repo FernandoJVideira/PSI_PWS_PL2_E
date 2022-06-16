@@ -9,26 +9,24 @@ class ProdutoController extends BaseController
     public function index()
     {
         $produtos = Produto::all();
+        $ivas = Iva::all();
 
-        $this -> renderView('produto/index.php', ['produtos' => $produtos]);
+        $this->renderView('produto/index.php', ['produtos' => $produtos, 'ivas' =>  $ivas]);
     }
 
     public function show($id)
     {
         $produto = Produto::find([$id]);
-        if (is_null($produto)) 
-        {
+        if (is_null($produto)) {
             $this->redirectToRoute('home/erro'); //TODO: rework pg erro
-        } 
-        else 
-        {
+        } else {
             $this->renderView('produto/show.php', ['produto' => $produto]);
         }
     }
 
     public function create()
     {
-        $ivas = Iva::all();
+        $ivas = Iva::all(array('conditions' => array('em_vigor = ?', '1')));
         $this->renderView('produto/create.php', ['ivas' => $ivas]);
     }
 
@@ -36,21 +34,19 @@ class ProdutoController extends BaseController
     {
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
-        $produto = new Produto
-        (['referencia' => $_POST['referencia'],
-         'descricao' => $_POST['descricao'], 
-         'preco_unid' => $_POST['preco_unid'], 
-         'quant_stock' => $_POST['quant_stock'],
-         'iva_id' => $_POST['iva_id'],
+        $produto = new Produto([
+            'referencia' => $_POST['referencia'],
+            'descricao' => $_POST['descricao'],
+            'preco_unid' => $_POST['preco_unid'],
+            'quant_stock' => $_POST['quant_stock'],
+            'iva_id' => $_POST['iva_id'],
         ]);
-        
-        if($produto->is_valid())
-        {
+
+
+        if ($produto->is_valid()) {
             $produto->save();
-            $this ->redirectToRoute();
-        }
-        else 
-        {
+            $this->redirectToRoute('produto/index');
+        } else {
             $this->renderView('produto/create.php', ['produto' => $produto]);
         }
     }
@@ -61,7 +57,7 @@ class ProdutoController extends BaseController
         if (is_null($produto)) {
             $this->redirectToRoute('home/erro');
         } else {
-        //mostrar a vista edit passando os dados por parâmetro
+            //mostrar a vista edit passando os dados por parâmetro
             $this->renderView('produto/edit.php', ['produto' => $produto]);
         }
     }
@@ -71,15 +67,14 @@ class ProdutoController extends BaseController
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
         $produto = Produto::find([$id]);
-        $produto->update_attributes
-        (['referencia' => $_POST['referencia'],
-         'descricao' => $_POST['descricao'], 
-         'preco_unid' => $_POST['preco_unid'], 
-         'quant_stock' => $_POST['quant_stock'],
+        $produto->update_attributes([
+            'referencia' => $_POST['referencia'],
+            'descricao' => $_POST['descricao'],
+            'preco_unid' => $_POST['preco_unid'],
+            'quant_stock' => $_POST['quant_stock'],
         ]);
 
-        if($produto->is_valid())
-        {
+        if ($produto->is_valid()) {
             $produto->save();
             $this->redirectToRoute('produto/index');
         } else {
@@ -91,7 +86,7 @@ class ProdutoController extends BaseController
     {
         $produto = Produto::find([$id]);
         $produto->delete();
-        
+
         $this->redirectToRoute('produto/index');
     }
 }

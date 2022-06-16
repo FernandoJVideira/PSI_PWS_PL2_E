@@ -9,87 +9,125 @@ class FaturaController extends BaseController
 {
     public function index()
     {
-        $fatura = Fatura::all();
+        $base = new BaseAuthController();
+        if ($base->userData(2) == 'cliente') {
+            $fatura = Fatura::find(array("conditions" => array("cliente_id = ?", $base->userData(1))));
+            $users = User::all([$base->userData(1)]);
+        }
 
-        $this -> renderView('fatura/index.php', ['fatura' => $fatura]);
+        $fatura = Fatura::all();
+        $users = User::all();
+
+        $this->renderView('fatura/index.php', ['faturas' => $fatura, 'users' => $users]);
     }
 
     public function show($id)
     {
         $fatura = Fatura::find([$id]);
-        if (is_null($fatura)) 
-        {
+        $users = User::all();
+        $produtos = Produto::all();
+        if (is_null($fatura)) {
             $this->redirectToRoute('home/erro'); //TODO: rework pg erro
-        } 
-        else 
-        {
-            $this->renderView('fatura/show.php', ['faturaDetails' => $fatura]);
+        } else {
+            //$this->renderView('fatura/imprimir.php', ['faturaDetails' => $fatura]);
+            require_once 'views/fatura/print.php';
         }
+    }
+
+    public function done($id)
+    {
+        $base = new BaseAuthController();
+        $base->restricted();
+
+        $fatura = Fatura::find([$id]);
+        $fatura->update_attribute('estado', 1);
+        $this->redirectToRoute('fatura/index');
     }
 
     public function create()
     {
+        $base = new BaseAuthController();
+        $base->restricted();
         $users = User::find('all', array('conditions' => array('role = ?', 'cliente')));
         $this->renderView('fatura/create.php', ['users' => $users]);
     }
 
     public function store()
     {
-        $userData = new BaseAuthController();
+        $base = new BaseAuthController();
+        $base->restricted();
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
-        $fatura = new Fatura
-        (['data' => $_POST['data'],
-         'valor_preco_total' => '0', 
-         'valor_iva_total' => '0', 
-         'estado' => false,
-         'cliente_id' => $_POST['cliente_id'],
-         'funcionario_id' => $userData->userData(1),
+        $fatura = new Fatura([
+            'data' => $_POST['data'],
+            'valor_preco_total' => '0',
+            'valor_iva_total' => '0',
+            'estado' => false,
+            'cliente_id' => $_POST['cliente_id'],
+            'funcionario_id' => $base->userData(1),
         ]);
 
 
-        if($fatura->is_valid())
-        {
+        if ($fatura->is_valid()) {
             $fatura->save();
             $fatura = Fatura::last();
-            $this ->redirectToRoute('linha/create&id='.$fatura->id);
-        } 
-        else 
-        {
+            $this->redirectToRoute('fatura/edit&id=' . $fatura->id);
+        } else {
             $this->renderView('fatura/create.php', ['fatura' => $fatura]);
         }
     }
 
+    public function calcularTotal($id)
+    {
+        $linhas = Linha::find('all', array("conditions" => array("fatura_id = ?", $id)));
+        $total_preco = 0;
+        $total_iva = 0;
+        foreach ($linhas as $linha) {
+            $total_preco += ($linha->valor_uni * $linha->quantidade);
+            $total_iva += $linha->valor_iva;
+        }
+        $fatura = Fatura::find([$id]);
+        $fatura->update_attribute('valor_preco_total', $total_preco);
+        $fatura->update_attribute('valor_iva_total', $total_iva);
+        $fatura->save();
+    }
+
     public function edit($id)
     {
-        
+        $base = new BaseAuthController();
+        $base->restricted();
+
         $fatura = Fatura::find([$id]);
         $users = User::find('all', array('conditions' => array('role = ?', 'cliente')));
         $linhas = Linha::find('all', array('conditions' => array('fatura_id = ?', $fatura->id)));
+        $produto = Produto::all();
 
         if (is_null($fatura)) {
             $this->renderView('ERROR');
         } else {
-        
-            $this->renderView('fatura/edit.php', ['fatura' => $fatura, 'users' => $users, 'linhas' => $linhas]);
+            $this->calcularTotal($fatura->id);
+            $this->renderView('fatura/edit.php', ['fatura' => $fatura, 'users' => $users, 'linhas' => $linhas, 'produtos' => $produto]);
         }
     }
 
     public function update($id)
     {
+        $base = new BaseAuthController();
+        $base->restricted();
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
         $fatura = Fatura::find([$id]);
-        $fatura->update_attributes
-        (['data' => $_POST['data'],
-        'valor_preco_atual' => sha1($_POST['valor_preco_atual']), 
-        'valor_iva_total' => $_POST['valor_iva_total'], 
-        'estado' => $_POST['estado'],
-       ]);
 
-        if($fatura->is_valid())
-        {
+        foreach ($_POST as $field) {
+            $key = array_search($field, $_POST);
+            if ($_POST[$key] != "") {
+                $fatura->update_attribute($key, $_POST[$key]);
+            }
+        }
+
+        if ($fatura->is_valid()) {
             $fatura->save();
+            $this->calcularTotal($fatura->id);
             $this->redirectToRoute('fatura/index');
         } else {
             $this->renderView('fatura/edit.php', ['fatura' => $fatura]);
@@ -98,9 +136,12 @@ class FaturaController extends BaseController
 
     public function delete($id)
     {
+        $base = new BaseAuthController();
+        $base->restricted();
+
         $fatura = Fatura::find([$id]);
         $fatura->delete();
-        
+
         $this->redirectToRoute('fatura/index');
     }
 }

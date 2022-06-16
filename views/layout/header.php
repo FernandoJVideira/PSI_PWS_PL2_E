@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Fatura+</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="public/css/Ludens-Users---25-After-Register.css">
     <link rel="stylesheet" href="public/fonts/fontawesome-all.min.css">
@@ -24,22 +24,32 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php if ($auth->isLoggedIn() && $_SESSION['login'][2] != 'cliente') { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="router.php?r=fatura/registar">Registar Fatura</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="router.php?r=user/create">Registar Utilizador</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="router.php?r=user/index">Gerir Users</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="router.php?r=fatura/index">Gerir Faturas</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="router.php?r=iva/create">Registar Iva</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="router.php?r=iva/index">Gerir Ivas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=produto/create">Registar Produto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=produto/index">Gerir Produtos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=fatura/create">Criar Fatura</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=fatura/index">Gerir Faturas</a>
+                        </li>
+                    <?php } else if ($auth->isLoggedIn() && $_SESSION['login'][2] == 'cliente') { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=fatura/index">Ver Faturas</a>
                         </li>
                     <?php } ?>
                 </ul>

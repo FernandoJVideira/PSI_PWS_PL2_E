@@ -11,7 +11,7 @@ class UserController extends BaseController
     {
         $base = new BaseAuthController();
         $user = null;
-        $this->restricted();
+        $base->restricted();
 
         if ($base->userData(2) == 'funcionario') {
             $users = User::find('all', array('conditions' => array('role =?', 'cliente')));
@@ -24,7 +24,8 @@ class UserController extends BaseController
 
     public function show($id)
     {
-        $this->restricted();
+        $base = new BaseAuthController();
+        $base->restricted();
 
         $user = User::find([$id]);
         if (is_null($user)) {
@@ -36,14 +37,16 @@ class UserController extends BaseController
 
     public function create()
     {
-        $this->restricted();
+        $base = new BaseAuthController();
+        $base->restricted();
         $this->renderView('user/create.php');
     }
 
 
     public function store()
     {
-        $this->restricted();
+        $base = new BaseAuthController();
+        $base->restricted();
 
         if ($_POST == null)
             $this->redirectToRoute('user/create');
@@ -76,7 +79,7 @@ class UserController extends BaseController
     public function edit($id)
     {
         $base = new BaseAuthController();
-        $this->restricted();
+        $base->restricted();
         if (!isset($id))
             $this->redirectToRoute('user/index');
 
@@ -96,7 +99,7 @@ class UserController extends BaseController
     public function update($id)
     {
         $base = new BaseAuthController();
-        $this->restricted();
+        $base->restricted();
 
         try {
             $user = User::find([$id]);
@@ -129,7 +132,8 @@ class UserController extends BaseController
     public function delete($id)
     {
         $base = new BaseAuthController();
-        $this->restricted();
+        $base->restricted();
+
         if (!isset($id))
             $this->redirectToRoute('user/index');
         try {
@@ -144,12 +148,5 @@ class UserController extends BaseController
         $user->delete();
 
         $this->redirectToRoute('user/index');
-    }
-
-    private function restricted()
-    {
-        $base = new BaseAuthController();
-        if ($base->userData(2) == 'cliente')
-            $this->redirectToRoute('home/erro');
     }
 }

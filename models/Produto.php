@@ -9,11 +9,7 @@ class Produto extends ActiveRecord\Model
     );
 
     static $validates_size_of = array(
-        array('referencia', 'within' => array(5,12)),
-        array('descricao', 'within' => array(3,120)),
-    );
-
-    static $has_many = array(
-        array('linhas'),
+        array('referencia', 'within' => array(5, 12)),
+        array('descricao', 'within' => array(3, 120)),
     );
 }

@@ -19,18 +19,17 @@
                 <th>
                     <h3>Quantidade em Stock</h3>
                 </th>
-               </thead>
+            </thead>
             <tbody>
-                <?php foreach ($produtos as $produto) { 
-                    $iva = Iva::find([$produto->iva_id]);
-                    ?>
+                <?php foreach ($produtos as $produto) {
+                ?>
 
                     <tr>
                         <td><?= $produto->referencia ?></td>
-                        <td><?= $produto->descricao?></td>
-                        <td><?= $produto->preco_unid?></td>
-                        <td><?= $iva->percentagem?></td>
-                        <td><?= $produto->quant_stock?></td>
+                        <td><?= $produto->descricao ?></td>
+                        <td><?= $produto->preco_unid ?></td>
+                        <td><?= $ivas[array_search($produto->iva_id, array_column($ivas, 'id'))]->percentagem ?></td>
+                        <td><?= $produto->quant_stock ?></td>
                         <td>
                             <a href="router.php?r=produto/edit&id=<?= $produto->id ?>" class="btn btn-info" role="button">Edit</a>
                             <a href="router.php?r=produto/delete&id=<?= $produto->id ?>" class="btn btn-warning" role="button">Delete</a>

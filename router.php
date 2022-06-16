@@ -85,7 +85,7 @@ switch ($route) {
     case 'home/erro':
         $home->erro();
         break;
-        
+
         //Ptoduto
 
     case 'produto/create':
@@ -118,7 +118,7 @@ switch ($route) {
     case 'linha/delete':
         $linha->delete($id);
         break;
-    
+
         //Fatura
 
     case 'fatura/index':
@@ -136,7 +136,13 @@ switch ($route) {
     case 'fatura/update':
         $fatura->update($id);
     case 'fatura/delete':
-        $fatura->create();
+        $fatura->delete($id);
+        break;
+    case 'fatura/emitir':
+        $fatura->done($id);
+        break;
+    case 'fatura/print':
+        $fatura->show($id);
         break;
     default:
         $home->index();
