@@ -93,7 +93,12 @@ class UserController extends BaseController
             $this->redirectToRoute('home/erro');
         }
         //mostrar a vista edit passando os dados por parâmetro
-        $this->renderView('user/edit.php', ['user' => $user]);
+        if ($base->userData(2) != 'administrador') {
+            $this->renderView('user/editFunc.php', ['user' => $user]);
+            return;
+        }
+
+        $this->renderView('user/editAdmin.php', ['user' => $user]);
     }
 
     public function update($id)
@@ -121,11 +126,18 @@ class UserController extends BaseController
         }
 
         if ($user->is_valid()) {
-            //$user->update_attribute('password', sha1($_POST['password']));
+            if (isset($_POST['password']))
+                $user->update_attribute('password', sha1($_POST['password']));
             $user->save();
             $this->redirectToRoute('user/index');
         } else {
-            $this->renderView('user/edit.php', ['user' => $user]);
+
+            if ($base->userData(2) != 'administrador') {
+                $this->renderView('user/editFunc.php', ['user' => $user]);
+                return;
+            }
+
+            $this->renderView('user/editAdmin.php', ['user' => $user]);
         }
     }
 
