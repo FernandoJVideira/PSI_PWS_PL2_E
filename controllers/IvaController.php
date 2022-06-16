@@ -35,16 +35,16 @@ class IvaController extends BaseController
     public function store()
     {
         $this->restricted();
-        if ($_POST['percentagem'] == null)
+        if (trim($_POST['percentagem']) == null)
             $this->redirectToRoute('iva/create');
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
 
         $em_vigor = filter_var($_POST['em_vigor'], FILTER_VALIDATE_BOOLEAN);
-        $percentagem = str_replace(',', '.', $_POST['percentagem']);
+        $percentagem = str_replace(',', '.', trim($_POST['percentagem']));
         $iva = new Iva([
             'percentagem' => $percentagem,
-            'descricao' => $_POST['descricao'],
+            'descricao' => trim($_POST['descricao']),
             'em_vigor' => $em_vigor
         ]);
         if ($iva->is_valid()) {
@@ -84,10 +84,10 @@ class IvaController extends BaseController
         }
 
         $em_vigor = filter_var($_POST['em_vigor'], FILTER_VALIDATE_BOOLEAN);
-
+        $percentagem = str_replace(',', '.', trim($_POST['percentagem']));
         $iva->update_attributes([
-            'percentagem' => $_POST['percentagem'],
-            'descricao' => $_POST['descricao'],
+            'percentagem' => $percentagem,
+            'descricao' => trim($_POST['descricao']),
             'em_vigor' => $em_vigor
         ]);
         if ($iva->is_valid()) {
@@ -104,13 +104,13 @@ class IvaController extends BaseController
         if (!isset($id))
             $this->redirectToRoute('iva/index');
 
-        try {
-            $iva = Iva::find([$id]);
-        } catch (Exception $e) {
-            $this->redirectToRoute('iva/index');
-        }
-        $iva->delete();
+        $iva = Iva::find([$id]);
 
+        try {
+            $iva->delete();
+        } catch (Exception $e) {
+            $this->redirectToRoute('iva/index', ['erro' => true]);
+        }
         $this->redirectToRoute('iva/index');
     }
 

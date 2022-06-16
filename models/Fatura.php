@@ -3,15 +3,21 @@
 class Fatura extends ActiveRecord\Model
 {
     static $validates_presence_of = array(
-        array('data', 'message' => 'It must be provided'),
-        array('valor_preco_total', 'message' => 'It must be provided'),
-        array('valor_preco_total', 'message' => 'It must be provided'),
-        array('estado', 'message' => 'It must be provided')
+        array('cliente_id', 'message' => 'Campo obrigatório!'),
+        array('data', 'message' => 'Campo obrigatório!'),
+        array('valor_preco_total', 'message' => 'Campo obrigatório!'),
+        array('valor_preco_total', 'message' => 'Campo obrigatório!'),
+        array('estado', 'message' => 'Campo obrigatório!')
     );
 
     static $has_many = array(
-        
         array('linhas')
-    
     );
+
+    public function validate()
+    {
+        $user = User::find(array("conditions" => array("role = 'cliente' AND id = ?", $this->cliente_id)));
+        if ($user == null)
+            $this->errors->add('cliente_id', "O utilizador escolhido não é cliente!");
+    }
 }

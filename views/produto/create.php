@@ -7,41 +7,47 @@
     <form action="router.php?r=produto/store" method="post" enctype="multipart/form-data" role="form">
       <div class="form-group mb-3">
         <label class="form-label">Referência*</label>
-        <span> <?php if (isset($produto->errors)) {
-                  if (is_array($produto->errors->on('referencia'))) {
-                    foreach ($produto->errors->on('referencia') as $error) {
-                      echo $error . '<br>';
-                    }
-                  } else {
-                    echo $produto->errors->on('referencia');
-                  }
-                } ?></span>
+        <?php
+        if (isset($produto->errors)) {
+          echo "<span class='alerta'>";
+          if (is_array($produto->errors->on('referencia'))) {
+            echo $produto->errors->on('referencia')[0];
+          } else {
+            echo $produto->errors->on('referencia');
+          }
+          echo '</span>';
+        }
+        ?>
         <input class="form-control" type="text" name="referencia" value="<?php if (isset($produto->referencia)) echo $produto->referencia ?>">
       </div>
       <div class="form-group mb-3">
         <label class="form-label">Nome Produto*</label>
-        <span> <?php if (isset($produto->errors)) {
-                  if (is_array($produto->errors->on('descricao'))) {
-                    foreach ($produto->errors->on('descricao') as $error) {
-                      echo $error . '<br>';
-                    }
-                  } else {
-                    echo $produto->errors->on('descricao');
-                  }
-                } ?></span>
+        <?php
+        if (isset($produto->errors)) {
+          echo "<span class='alerta'>";
+          if (is_array($produto->errors->on('descricao'))) {
+            echo $produto->errors->on('descricao')[0];
+          } else {
+            echo $produto->errors->on('descricao');
+          }
+          echo '</span>';
+        }
+        ?>
         <input class="form-control" type="text" name="descricao" value="<?php if (isset($produto->descricao)) echo $produto->descricao ?>">
       </div>
       <div class="form-group mb-3">
         <label class="form-label">Preço Unitário*</label>
-        <span> <?php if (isset($produto->errors)) {
-                  if (is_array($produto->errors->on('preco_unid'))) {
-                    foreach ($produto->errors->on('preco_unid') as $error) {
-                      echo $error . '<br>';
-                    }
-                  } else {
-                    echo $produto->errors->on('preco_unid');
-                  }
-                } ?></span>
+        <?php
+        if (isset($produto->errors)) {
+          echo "<span class='alerta'>";
+          if (is_array($produto->errors->on('preco_unid'))) {
+            echo $produto->errors->on('preco_unid')[0];
+          } else {
+            echo $produto->errors->on('preco_unid');
+          }
+          echo '</span>';
+        }
+        ?>
         <input class="form-control" type="text" name="preco_unid" value="<?php if (isset($produto->preco_unid)) echo $produto->preco_unid ?>">
       </div>
       <div class="form-group mb3">
@@ -57,17 +63,20 @@
           } ?>
         </select>
       </div>
+      <br>
       <div class="form-group mb-3">
         <label class="form-label">Quantidade em Stock*</label>
-        <?php if (isset($produto->errors)) {
+        <?php
+        if (isset($produto->errors)) {
+          echo "<span class='alerta'>";
           if (is_array($produto->errors->on('quant_stock'))) {
-            foreach ($produto->errors->on('quant_stock') as $error) {
-              echo $error . '<br>';
-            }
+            echo $produto->errors->on('quant_stock')[0];
           } else {
             echo $produto->errors->on('quant_stock');
           }
-        } ?></span>
+          echo '</span>';
+        }
+        ?>
         <input class="form-control" type="text" name="quant_stock" value="<?php if (isset($produto->quant_stock)) echo $produto->quant_stock ?>">
       </div>
       <hr style="margin-top: 30px;margin-bottom: 10px;">

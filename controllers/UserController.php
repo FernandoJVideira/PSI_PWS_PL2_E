@@ -55,20 +55,19 @@ class UserController extends BaseController
         //your form name fields must match the ones of the table fields
 
         $user = new User([
-            'username' => $_POST['username'],
-            'password' => ($_POST['password'] != "" ? $_POST['password'] : null),
-            'email' => $_POST['email'],
-            'telefone' => $_POST['telefone'],
-            'nif' => $_POST['nif'],
-            'morada' => $_POST['morada'],
-            'cod_postal' => $_POST['cod_postal'],
-            'localidade' => $_POST['localidade'],
-            'role' => isset($_POST['role']) && $_POST['role'] != 'administrador' ? $_POST['role'] : 'cliente'
+            'username' => trim($_POST['username']),
+            'password' => (trim($_POST['password']) != "" ? trim($_POST['password']) : null),
+            'email' => trim($_POST['email']),
+            'telefone' => trim($_POST['telefone']),
+            'nif' => trim($_POST['nif']),
+            'morada' => trim($_POST['morada']),
+            'cod_postal' => trim($_POST['cod_postal']),
+            'localidade' => trim($_POST['localidade']),
+            'role' => (isset($_POST['role']) && ($_POST['role'] != 'administrador' && $base->userData(2) != 'funcionario')) ? trim($_POST['role']) : 'cliente'
         ]);
 
         if ($user->is_valid()) {
-            var_dump($user);
-            $user->update_attribute('password', sha1($_POST['password']));
+            $user->update_attribute('password', sha1(trim($_POST['password'])));
             $user->save();
             $this->redirectToRoute('user/index');
         } else {
@@ -95,10 +94,8 @@ class UserController extends BaseController
         //mostrar a vista edit passando os dados por parâmetro
         if ($base->userData(2) != 'administrador') {
             $this->renderView('user/editFunc.php', ['user' => $user]);
-            return;
-        }
-
-        $this->renderView('user/editAdmin.php', ['user' => $user]);
+        } else
+            $this->renderView('user/editAdmin.php', ['user' => $user]);
     }
 
     public function update($id)
@@ -118,26 +115,30 @@ class UserController extends BaseController
 
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
+
+        $params = array();
+
         foreach ($_POST as $field) {
             $key = array_search($field, $_POST);
-            if ($_POST[$key] != "") {
-                $user->update_attribute($key, $_POST[$key]);
+            if (trim($_POST[$key]) != "") {
+                if ($key == 'role')
+                    $params[$key] = (isset($_POST['role']) && ($_POST['role'] != 'administrador' && $base->userData(2) != 'funcionario')) ? $_POST['role'] : 'cliente';
+                else
+                    $params[$key] = trim($_POST[$key]);
             }
         }
+        $user->update_attributes($params);
 
         if ($user->is_valid()) {
-            if (isset($_POST['password']))
-                $user->update_attribute('password', sha1($_POST['password']));
+            if (trim($_POST['password']) != "")
+                $user->update_attribute('password', sha1(trim($_POST['password'])));
             $user->save();
             $this->redirectToRoute('user/index');
         } else {
-
             if ($base->userData(2) != 'administrador') {
                 $this->renderView('user/editFunc.php', ['user' => $user]);
-                return;
-            }
-
-            $this->renderView('user/editAdmin.php', ['user' => $user]);
+            } else
+                $this->renderView('user/editAdmin.php', ['user' => $user]);
         }
     }
 
@@ -148,16 +149,19 @@ class UserController extends BaseController
 
         if (!isset($id))
             $this->redirectToRoute('user/index');
+
         try {
             $user = User::find([$id]);
         } catch (Exception $e) {
             $this->redirectToRoute('home/erro');
         }
-        if ($user->role == 'administrador' || $user->id == $base->userData(1)) {
+        if ($user->id == $base->userData(1) || ($base->userData(2) != 'administrador' && $user->role == 'funcionario'))
             $this->redirectToRoute('home/erro');
+        try {
+            $user->delete();
+        } catch (Exception $e) {
+            $this->redirectToRoute('user/index', ['erro' => true]);
         }
-
-        $user->delete();
 
         $this->redirectToRoute('user/index');
     }
