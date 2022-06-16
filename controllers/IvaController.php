@@ -13,18 +13,6 @@ class IvaController extends BaseController
         $this->renderView('iva/index.php', ['ivas' => $ivas]);
     }
 
-    public function show($id)
-    {
-        $this->restricted();
-
-        $iva = Iva::find([$id]);
-        if (is_null($iva)) {
-            $this->redirectToRoute('iva/index');
-        } else {
-            $this->renderView('iva/show.php', ['ivaDetails' => $iva]);
-        }
-    }
-
     public function create()
     {
         $this->restricted();
@@ -35,6 +23,7 @@ class IvaController extends BaseController
     public function store()
     {
         $this->restricted();
+
         if (trim($_POST['percentagem']) == null)
             $this->redirectToRoute('iva/create');
         //create new resource (activerecord/model) instance with data from POST
@@ -58,8 +47,6 @@ class IvaController extends BaseController
     public function edit($id)
     {
         $this->restricted();
-        if (!isset($id))
-            $this->redirectToRoute('iva/index');
 
         try {
             $iva = Iva::find([$id]);
@@ -73,10 +60,7 @@ class IvaController extends BaseController
     public function update($id)
     {
         $this->restricted();
-        if (!isset($id))
-            $this->redirectToRoute('iva/index');
-        //find resource (activerecord/model) instance where PK = $id
-        //your form name fields must match the ones of the table fields
+
         try {
             $iva = Iva::find([$id]);
         } catch (Exception $e) {
@@ -101,10 +85,12 @@ class IvaController extends BaseController
     public function delete($id)
     {
         $this->restricted();
-        if (!isset($id))
-            $this->redirectToRoute('iva/index');
 
-        $iva = Iva::find([$id]);
+        try {
+            $iva = Iva::find([$id]);
+        } catch (Exception $e) {
+            $this->redirectToRoute('iva/index');
+        }
 
         try {
             $iva->delete();
@@ -117,7 +103,6 @@ class IvaController extends BaseController
     private function restricted()
     {
         $base = new BaseAuthController();
-        if ($base->userData(2) == 'cliente')
-            $this->redirectToRoute('home/erro');
+        $base->restricted();
     }
 }

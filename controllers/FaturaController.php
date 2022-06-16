@@ -40,6 +40,9 @@ class FaturaController extends BaseController
         $base->restricted();
 
         $fatura = Fatura::find([$id]);
+        $linhas = Linha::find(array('conditions' => array('fatura_id = ?', $id)));
+        if ($linhas == null)
+            $this->redirectToRoute('fatura/index');
         $fatura->update_attribute('estado', 1);
         $this->redirectToRoute('fatura/index');
     }

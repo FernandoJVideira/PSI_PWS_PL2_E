@@ -28,18 +28,14 @@ if (isset($_GET['id'])) {
 }
 
 switch ($route) {
-
         //Auth
-
     case 'auth/login':
         $auth->authlogin();
         break;
     case 'auth/logout':
         $auth->authlogout();
         break;
-
         //User
-
     case 'user/create':
         $user->create();
         break;
@@ -58,9 +54,7 @@ switch ($route) {
     case 'user/delete':
         $user->delete($id);
         break;
-
         //Iva
-
     case 'iva/create':
         $iva->create();
         break;
@@ -79,15 +73,7 @@ switch ($route) {
     case 'iva/delete':
         $iva->delete($id);
         break;
-
-        //Home
-
-    case 'home/erro':
-        $home->erro();
-        break;
-
         //Ptoduto
-
     case 'produto/create':
         $product->create();
         break;
@@ -106,9 +92,7 @@ switch ($route) {
     case 'produto/delete':
         $product->delete($id);
         break;
-
         //LinhaFatura
-
     case 'linha/create':
         $linha->create($id);
         break;
@@ -118,9 +102,7 @@ switch ($route) {
     case 'linha/delete':
         $linha->delete($id);
         break;
-
         //Fatura
-
     case 'fatura/index':
         $fatura->index();
         break;
@@ -144,6 +126,10 @@ switch ($route) {
         break;
     case 'fatura/print':
         $fatura->show($id);
+        break;
+        //Home
+    case 'home/erro':
+        $home->erro();
         break;
     default:
         $home->index();

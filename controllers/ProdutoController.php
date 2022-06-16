@@ -8,6 +8,8 @@ class ProdutoController extends BaseController
 {
     public function index()
     {
+        $this->restricted();
+
         $produtos = Produto::all();
         $ivas = Iva::all();
 
@@ -16,6 +18,8 @@ class ProdutoController extends BaseController
 
     public function show($id)
     {
+        $this->restricted();
+
         try {
             $produto = Produto::find([$id]);
         } catch (\Throwable $th) {
@@ -26,12 +30,16 @@ class ProdutoController extends BaseController
 
     public function create()
     {
+        $this->restricted();
+
         $ivas = Iva::all(array('conditions' => array('em_vigor = ?', '1')));
         $this->renderView('produto/create.php', ['ivas' => $ivas]);
     }
 
     public function store()
     {
+        $this->restricted();
+
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
         $preco = str_replace(',', '.', trim($_POST['preco_unid']));
@@ -54,6 +62,8 @@ class ProdutoController extends BaseController
 
     public function edit($id)
     {
+        $this->restricted();
+
         try {
             $produto = Produto::find([$id]);
         } catch (\Throwable $th) {
@@ -65,6 +75,8 @@ class ProdutoController extends BaseController
 
     public function update($id)
     {
+        $this->restricted();
+
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
         try {
@@ -93,6 +105,8 @@ class ProdutoController extends BaseController
 
     public function delete($id)
     {
+        $this->restricted();
+
         try {
             $produto = Produto::find([$id]);
         } catch (\Throwable $th) {
@@ -104,7 +118,12 @@ class ProdutoController extends BaseController
             $this->redirectToRoute('produto/index', ['erro' => $id]);
         }
 
-
         $this->redirectToRoute('produto/index');
+    }
+
+    private function restricted()
+    {
+        $base = new BaseAuthController();
+        $base->restricted();
     }
 }

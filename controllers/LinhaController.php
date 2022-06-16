@@ -10,6 +10,8 @@ class LinhaController extends BaseController
 
     public function create($idFatura)
     {
+        $this->restricted();
+
         $produtos = Produto::all();
         $fatura = Fatura::find([$idFatura]);
 
@@ -18,6 +20,17 @@ class LinhaController extends BaseController
 
     public function store($idFatura)
     {
+        $this->restricted();
+
+        try {
+            $fatura = Fatura::find([$idFatura]);
+        } catch (\Throwable $th) {
+            $this->redirectToRoute('fatura/index');
+        }
+
+        if ($_POST == null)
+            $this->redirectToRoute('fatura/edit', ['id' => $idFatura]);
+
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
         $calc = new FaturaController();
@@ -43,7 +56,6 @@ class LinhaController extends BaseController
             $this->redirectToRoute('fatura/edit', ['id' => $idFatura]);
         } else {
             $produtos = Produto::all();
-            $fatura = Fatura::find([$idFatura]);
             $this->renderView('linha/create.php', ['linha' => $linha, 'produtos' => $produtos, 'fatura' => $fatura]);
         }
     }
@@ -59,10 +71,18 @@ class LinhaController extends BaseController
 
     public function delete($id)
     {
+        $this->restricted();
+
         $linha = Linha::find([$id]);
         $id = $linha->fatura_id;
         $linha->delete();
         $this->updateStock($linha->produto_id, $linha->quantidade, '+');
         $this->redirectToRoute('fatura/edit', ['id' => $id]);
+    }
+
+    private function restricted()
+    {
+        $base = new BaseAuthController();
+        $base->restricted();
     }
 }
