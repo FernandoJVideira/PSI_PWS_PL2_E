@@ -3,9 +3,19 @@
 class Produto extends ActiveRecord\Model
 {
     static $validates_presence_of = array(
-        array('referencia', 'message' => 'It must be provided'),
-        array('descricao', 'message' => 'It must be provided'),
-        array('preco_unid', 'message' => 'It must be provided'),
+        array('referencia', 'message' => 'Campo obrigatório!'),
+        array('descricao', 'message' => 'Campo obrigatório!'),
+        array('preco_unid', 'message' => 'Campo obrigatório!'),
+        array('quant_stock', 'message' => 'Campo obrigatório!'),
+        array('iva_id', 'message' => 'Campo obrigatório!')
+    );
+
+    static $validates_uniqueness_of = array(
+        array('referencia', 'message' => 'A referencia inserida já existe!'),
+    );
+    static $validates_numericality_of = array(
+        array('quant_stock', 'greater_than' => 0, 'message' => 'Formato incorreto!'),
+        array('preco_unid', 'greater_than' => 0, 'message' => 'Formato incorreto!'),
     );
 
     static $validates_size_of = array(

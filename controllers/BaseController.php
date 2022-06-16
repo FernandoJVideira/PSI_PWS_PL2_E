@@ -2,18 +2,16 @@
 
 class BaseController
 {
-    public function redirectToRoute($route = '', $params =[])
+    public function redirectToRoute($route = '', $params = [])
     {
         $url = 'router.php';
-        if($route)
-        {
-            $url = 'router.php?r='.$route;
-            foreach($params as $paramKey => $paramValue)
-            {
-                $url.='&'.$paramKey.'='.$paramValue;
+        if ($route) {
+            $url = 'router.php?r=' . $route;
+            foreach ($params as $paramKey => $paramValue) {
+                $url .= '&' . $paramKey . '=' . $paramValue;
             }
         }
-        header('Location: '.$url);
+        header('Location: ' . $url);
         exit(0);
     }
 
@@ -21,8 +19,7 @@ class BaseController
     {
         extract($params);
         require_once 'views/layout/header.php';
-        require_once 'views/'.$view;
+        require_once 'views/' . $view;
         require_once 'views/layout/footer.php';
     }
-
 }

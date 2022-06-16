@@ -8,9 +8,6 @@ class Iva extends ActiveRecord\Model
         array('em_vigor', 'message' => 'Campo obrigatório!')
     );
 
-     /* static $validates_format_of = array(
-     array('percentagem', 'without' => '/^[a-zA-Z]+$/') ); */
-
     static $validates_numericality_of = array(
         array(
             'percentagem', 'less_than_or_equal_to' => 100, 'greater_than_or_equal_to' => 0,

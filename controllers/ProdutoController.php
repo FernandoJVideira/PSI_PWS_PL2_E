@@ -16,12 +16,12 @@ class ProdutoController extends BaseController
 
     public function show($id)
     {
-        $produto = Produto::find([$id]);
-        if (is_null($produto)) {
-            $this->redirectToRoute('home/erro'); //TODO: rework pg erro
-        } else {
-            $this->renderView('produto/show.php', ['produto' => $produto]);
+        try {
+            $produto = Produto::find([$id]);
+        } catch (\Throwable $th) {
+            $this->redirectToRoute('produto/index');
         }
+        $this->renderView('produto/show.php', ['produto' => $produto]);
     }
 
     public function create()
@@ -34,58 +34,76 @@ class ProdutoController extends BaseController
     {
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
+        $preco = str_replace(',', '.', trim($_POST['preco_unid']));
+        $stock = filter_var(trim($_POST['quant_stock']), FILTER_VALIDATE_INT);
         $produto = new Produto([
-            'referencia' => $_POST['referencia'],
-            'descricao' => $_POST['descricao'],
-            'preco_unid' => $_POST['preco_unid'],
-            'quant_stock' => $_POST['quant_stock'],
-            'iva_id' => $_POST['iva_id'],
+            'referencia' => trim($_POST['referencia']),
+            'descricao' => trim($_POST['descricao']),
+            'preco_unid' => $preco,
+            'quant_stock' => $stock,
+            'iva_id' => trim($_POST['iva_id']),
         ]);
-
-
         if ($produto->is_valid()) {
             $produto->save();
             $this->redirectToRoute('produto/index');
         } else {
-            $this->renderView('produto/create.php', ['produto' => $produto]);
+            $ivas = Iva::all(array('conditions' => array('em_vigor = ?', '1')));
+            $this->renderView('produto/create.php', ['produto' => $produto, 'ivas' => $ivas]);
         }
     }
 
     public function edit($id)
     {
-        $produto = Produto::find([$id]);
-        if (is_null($produto)) {
-            $this->redirectToRoute('home/erro');
-        } else {
-            //mostrar a vista edit passando os dados por parâmetro
-            $this->renderView('produto/edit.php', ['produto' => $produto]);
+        try {
+            $produto = Produto::find([$id]);
+        } catch (\Throwable $th) {
+            $this->redirectToRoute('produto/index');
         }
+        //mostrar a vista edit passando os dados por parâmetro
+        $this->renderView('produto/edit.php', ['produto' => $produto]);
     }
 
     public function update($id)
     {
         //find resource (activerecord/model) instance where PK = $id
         //your form name fields must match the ones of the table fields
-        $produto = Produto::find([$id]);
+        try {
+            $produto = Produto::find([$id]);
+        } catch (\Throwable $th) {
+            $this->redirectToRoute('produto/index');
+        }
+
+        $preco = str_replace(',', '.', trim($_POST['preco_unid']));
+        $stock = filter_var(trim($_POST['quant_stock']), FILTER_VALIDATE_INT);
+
         $produto->update_attributes([
-            'referencia' => $_POST['referencia'],
-            'descricao' => $_POST['descricao'],
-            'preco_unid' => $_POST['preco_unid'],
-            'quant_stock' => $_POST['quant_stock'],
+            'referencia' => trim($_POST['referencia']),
+            'descricao' => trim($_POST['descricao']),
+            'preco_unid' => $preco,
+            'quant_stock' => $stock,
         ]);
 
         if ($produto->is_valid()) {
             $produto->save();
             $this->redirectToRoute('produto/index');
         } else {
-            $this->renderView('produto/edit.php', ['produtoDetails' => $produto]);
+            $this->renderView('produto/edit.php', ['produto' => $produto]);
         }
     }
 
     public function delete($id)
     {
-        $produto = Produto::find([$id]);
-        $produto->delete();
+        try {
+            $produto = Produto::find([$id]);
+        } catch (\Throwable $th) {
+            $this->redirectToRoute('produto/index');
+        }
+        try {
+            $produto->delete();
+        } catch (Exception $e) {
+            $this->redirectToRoute('produto/index', ['erro' => $id]);
+        }
+
 
         $this->redirectToRoute('produto/index');
     }

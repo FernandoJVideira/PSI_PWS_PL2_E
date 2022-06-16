@@ -20,8 +20,8 @@ class Linha extends ActiveRecord\Model
         $linha = Linha::find('all', array("conditions" => array("fatura_id = ? AND produto_id = ?", $this->fatura_id, $this->produto_id)));
         if ($linha != null)
             $this->errors->add('produto_id', "Produto já inserido na fatura");
-        $protuto = Produto::find([$this->produto_id]);
-        if (($protuto->quant_stock - $this->quantidade) < 0)
+        $produto = Produto::find([$this->produto_id]);
+        if (($produto->quant_stock - $this->quantidade) < 0)
             $this->errors->add('quantidade', "Quantidade superior à em stock");
     }
 }

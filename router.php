@@ -135,6 +135,7 @@ switch ($route) {
         break;
     case 'fatura/update':
         $fatura->update($id);
+        break;
     case 'fatura/delete':
         $fatura->delete($id);
         break;

@@ -125,7 +125,7 @@
         ?>
         <input class="form-control" type="text" name="localidade" value="<?php if (isset($user->localidade)) echo $user->localidade ?>">
       </div>
-      <?php if ($_SESSION['login'][2] != 'funcionario') { ?>
+      <?php if ($_SESSION['login'][2] != 'funcionario' && $_SESSION['login'][1] != $user->id) { ?>
         <div class="form-group mb-3">
           <label class="form-label">Tipo de Utilizador*</label>
           <?php

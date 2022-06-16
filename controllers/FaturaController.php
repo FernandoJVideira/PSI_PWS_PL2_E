@@ -13,10 +13,10 @@ class FaturaController extends BaseController
         if ($base->userData(2) == 'cliente') {
             $fatura = Fatura::find(array("conditions" => array("cliente_id = ?", $base->userData(1))));
             $users = User::all([$base->userData(1)]);
+        } else {
+            $fatura = Fatura::all();
+            $users = User::all();
         }
-
-        $fatura = Fatura::all();
-        $users = User::all();
 
         $this->renderView('fatura/index.php', ['faturas' => $fatura, 'users' => $users]);
     }
@@ -56,10 +56,11 @@ class FaturaController extends BaseController
     {
         $base = new BaseAuthController();
         $base->restricted();
+
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
         $fatura = new Fatura([
-            'data' => $_POST['data'],
+            'data' => trim($_POST['data']),
             'valor_preco_total' => '0',
             'valor_iva_total' => '0',
             'estado' => false,
@@ -96,8 +97,11 @@ class FaturaController extends BaseController
     {
         $base = new BaseAuthController();
         $base->restricted();
-
-        $fatura = Fatura::find([$id]);
+        try {
+            $fatura = Fatura::find([$id]);
+        } catch (\Throwable $th) {
+            $this->redirectToRoute('fatura/index');
+        }
         $users = User::find('all', array('conditions' => array('role = ?', 'cliente')));
         $linhas = Linha::find('all', array('conditions' => array('fatura_id = ?', $fatura->id)));
         $produto = Produto::all();
@@ -118,19 +122,32 @@ class FaturaController extends BaseController
         //your form name fields must match the ones of the table fields
         $fatura = Fatura::find([$id]);
 
+        $params = array();
+
         foreach ($_POST as $field) {
             $key = array_search($field, $_POST);
-            if ($_POST[$key] != "") {
-                $fatura->update_attribute($key, $_POST[$key]);
+            if (trim($_POST[$key]) != "") {
+                $params[$key] = trim($_POST[$key]);
             }
         }
+
+        $fatura->update_attributes($params);
 
         if ($fatura->is_valid()) {
             $fatura->save();
             $this->calcularTotal($fatura->id);
             $this->redirectToRoute('fatura/index');
         } else {
-            $this->renderView('fatura/edit.php', ['fatura' => $fatura]);
+            try {
+                $fatura = Fatura::find([$id]);
+            } catch (\Throwable $th) {
+                $this->redirectToRoute('fatura/index');
+            }
+            $users = User::find('all', array('conditions' => array('role = ?', 'cliente')));
+            $linhas = Linha::find('all', array('conditions' => array('fatura_id = ?', $fatura->id)));
+            $produto = Produto::all();
+            $this->calcularTotal($fatura->id);
+            $this->renderView('fatura/edit.php', ['fatura' => $fatura, 'users' => $users, 'linhas' => $linhas, 'produtos' => $produto]);
         }
     }
 
@@ -140,7 +157,11 @@ class FaturaController extends BaseController
         $base->restricted();
 
         $fatura = Fatura::find([$id]);
-        $fatura->delete();
+        try {
+            $fatura->delete();
+        } catch (Exception $e) {
+            $this->redirectToRoute('fatura/index', ['erro' => true]);
+        }
 
         $this->redirectToRoute('fatura/index');
     }

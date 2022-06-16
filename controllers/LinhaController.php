@@ -39,7 +39,8 @@ class LinhaController extends BaseController
             $linha->save();
             $calc->calcularTotal($idFatura);
             $this->updateStock($_POST['produto_id'], $_POST['quantidade'], '-');
-            $this->redirectToRoute('fatura/edit&id=' . $idFatura);
+            //$this->redirectToRoute('fatura/edit&id=' . $idFatura);
+            $this->redirectToRoute('fatura/edit', ['id' => $idFatura]);
         } else {
             $produtos = Produto::all();
             $fatura = Fatura::find([$idFatura]);
@@ -62,6 +63,6 @@ class LinhaController extends BaseController
         $id = $linha->fatura_id;
         $linha->delete();
         $this->updateStock($linha->produto_id, $linha->quantidade, '+');
-        $this->redirectToRoute('fatura/edit&id=' . $id);
+        $this->redirectToRoute('fatura/edit', ['id' => $id]);
     }
 }
