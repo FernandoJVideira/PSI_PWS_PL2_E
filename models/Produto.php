@@ -14,7 +14,7 @@ class Produto extends ActiveRecord\Model
         array('referencia', 'message' => 'A referencia inserida já existe!'),
     );
     static $validates_numericality_of = array(
-        array('quant_stock', 'greater_than' => 0, 'message' => 'Formato incorreto!'),
+        array('quant_stock', 'greater_than_or_equal_to' => 0, 'message' => 'Formato incorreto!'),
         array('preco_unid', 'greater_than' => 0, 'message' => 'Formato incorreto!'),
     );
 
