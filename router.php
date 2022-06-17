@@ -96,13 +96,16 @@ switch ($route) {
         break;
         //LinhaFatura
     case 'linha/create':
-        $linha->create($id);
+        $linha->create($id, isset($_GET['idp']) ? $_GET['idp'] : null);
         break;
     case 'linha/store':
         $linha->store($id);
         break;
     case 'linha/delete':
         $linha->delete($id);
+        break;
+    case 'linha/pesquisa':
+        $linha->pesquisa($id);
         break;
         //Fatura
     case 'fatura/index':
@@ -112,7 +115,7 @@ switch ($route) {
         $fatura->create();
         break;
     case 'fatura/store':
-        $fatura->store();
+        $fatura->store($id);
         break;
     case 'fatura/edit':
         $fatura->edit($id);

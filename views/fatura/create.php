@@ -20,6 +20,17 @@
             </div>
             <div class="form-group mb-3">
                 <label class="form-label">Data</label>
+                <?php
+                if (isset($fatura->errors)) {
+                    echo "<span class='alerta'>";
+                    if (is_array($fatura->errors->on('data'))) {
+                        echo $fatura->errors->on('data')[0];
+                    } else {
+                        echo $fatura->errors->on('data');
+                    }
+                    echo '</span>';
+                }
+                ?>
                 <input class="form-control" type="text" name="data" value="<?= date("d-m-Y") ?>">
             </div>
             <div class="form-group mb-3"><button class="btn btn-primary d-block w-100" type="submit"><i class="fas fa-save"></i>&nbsp;Guardar</button></div>

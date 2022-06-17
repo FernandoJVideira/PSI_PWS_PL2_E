@@ -4,18 +4,34 @@ require_once 'controllers/BaseController.php';
 require_once 'models/Linha.php';
 require_once 'models/Produto.php';
 require_once 'models/Fatura.php';
+require_once 'models/Iva.php';
 
 class LinhaController extends BaseController
 {
 
-    public function create($idFatura)
+    public function create($idFatura, $idProduto)
     {
         $this->restricted();
 
-        $produtos = Produto::all();
         $fatura = Fatura::find([$idFatura]);
+        if ($idProduto != null) {
+            $produto = Produto::find([$idProduto]);
+            $this->renderView('linha/create.php', ['fatura' => $fatura, 'produto' => $produto]);
+        } else
+            $this->renderView('linha/create.php', ['fatura' => $fatura]);
+    }
 
-        $this->renderView('linha/create.php', ['produtos' => $produtos, 'fatura' => $fatura]);
+    public function pesquisa($id)
+    {
+        if ($_POST == null) {
+            $produtos = Produto::all();
+            $ivas = Iva::all();
+            $this->renderView('linha/produtoFind.php', ['id' => $id, 'produtos' => $produtos, 'ivas' => $ivas]);
+        } else {
+            $ivas = Iva::all();
+            $produtos = Produto::find('all', array('conditions' => "referencia LIKE '%" . trim($_POST['referencia']) . "%'"));
+            $this->renderView('linha/produtoFind.php', ['id' => $id, 'produtos' => $produtos, 'ivas' => $ivas]);
+        }
     }
 
     public function store($idFatura)
@@ -34,29 +50,29 @@ class LinhaController extends BaseController
         //create new resource (activerecord/model) instance with data from POST
         //your form name fields must match the ones of the table fields
         $calc = new FaturaController();
+        $produto = Produto::find(array('conditions' => array('referencia =?', trim($_POST['referencia']))));
+        if ($produto == null) {
+            $this->redirectToRoute('linha/create', ['id' => $fatura->id, 'erro' => true]);
+        }
 
-        $produto = Produto::find([$_POST['produto_id']]);
         $iva = Iva::find([$produto->iva_id]);
 
         $valorIvaLinha = $_POST['quantidade'] * $produto->preco_unid * ($iva->percentagem / 100);
 
         $linha = new Linha([
             'quantidade' => $_POST['quantidade'],
-            'produto_id' => $_POST['produto_id'],
+            'produto_id' => $produto->id,
             'valor_uni' => $produto->preco_unid,
             'valor_iva' => $valorIvaLinha,
             'fatura_id' => $idFatura,
         ]);
-
         if ($linha->is_valid()) {
             $linha->save();
             $calc->calcularTotal($idFatura);
-            $this->updateStock($_POST['produto_id'], $_POST['quantidade'], '-');
-            //$this->redirectToRoute('fatura/edit&id=' . $idFatura);
+            $this->updateStock($produto->id, $_POST['quantidade'], '-');
             $this->redirectToRoute('fatura/edit', ['id' => $idFatura]);
         } else {
-            $produtos = Produto::all();
-            $this->renderView('linha/create.php', ['linha' => $linha, 'produtos' => $produtos, 'fatura' => $fatura]);
+            $this->renderView('linha/create.php', ['linha' => $linha, 'fatura' => $fatura, 'produto' => $produto]);
         }
     }
 

@@ -2,7 +2,6 @@
 
 require_once 'controllers/BaseController.php';
 require_once 'controllers/BaseAuthController.php';
-require_once 'models/Auth.php';
 require_once 'models/User.php';
 
 class UserController extends BaseController
@@ -67,7 +66,8 @@ class UserController extends BaseController
         ]);
 
         if ($user->is_valid()) {
-            $user->update_attribute('password', sha1(trim($_POST['password'])));
+            if (trim($_POST['password']) != "")
+                $user->update_attribute('password', sha1(trim($_POST['password'])));
             $user->save();
             $this->redirectToRoute('user/index');
         } else {

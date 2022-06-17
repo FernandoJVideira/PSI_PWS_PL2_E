@@ -1,7 +1,6 @@
 <?php
 
 require_once 'controllers/BaseController.php';
-require_once 'models/Auth.php';
 require_once 'models/Iva.php';
 
 class IvaController extends BaseController
