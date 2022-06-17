@@ -15,7 +15,7 @@
                             <div class="col-xs-12">
                                 <h2>Fatura
                                     <span class="small">Nº<?= $fatura->id ?></span>
-                                    <span class="small"> - <i><?= $funcionario->username?></i></span>
+                                    <span class="small"> - <i><?= $funcionario->username ?></i></span>
                                 </h2>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="card" style="border-style:hidden;">
+                            <div class="card" style="border-style:hidden; background-color:#f6f6f6;">
                                 <div class="card-body">
                                     <h5 class="card-title">Cliente</h5>
                                     <b>Nome: </b><?= $cliente->username ?><br>
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="card" style="border-style:hidden;">
+                            <div class="card" style="border-style:hidden; background-color:#f6f6f6;">
                                 <div class="card-body">
                                     <h5 class="card-title">Empresa</h5>
                                     <b>Nome: </b><?= $empresa->nome ?><br>
@@ -47,7 +47,7 @@
                                     <b>Morada: </b><?= $empresa->morada ?><br>
                                     <b>Código Postal: </b><?= $empresa->cod_postal ?><br>
                                     <b>Localidade: </b><?= $empresa->localidade ?><br>
-                                    <b>Capital Social: </b><?= $empresa->capital_social?>€<br>
+                                    <b>Capital Social: </b><?= $empresa->capital_social ?>€<br>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h3>Linhas Fatura</h3>
                             <table class="table">
                                 <thead>
                                     <tr class="line">
@@ -78,9 +77,9 @@
                                             $produto = Produto::find([$linha->produto_id]);
                                         ?>
                                             <td><?= $produto->referencia ?></td>
-                                            <td><?= $produto->descricao ?><br></td>                  
+                                            <td><?= $produto->descricao ?><br></td>
                                             <td class="text-right"><?= $linha->quantidade ?></td>
-                                            <td class="text-right"><?= $iva[array_search($produto->iva_id, array_column($iva, 'id'))]->percentagem?>%</td>
+                                            <td class="text-right"><?= $iva[array_search($produto->iva_id, array_column($iva, 'id'))]->percentagem ?>%</td>
                                             <td class="text-right"><?= $linha->valor_uni * $linha->quantidade ?>€</td>
                                     </tr>
                                 <?php } ?>

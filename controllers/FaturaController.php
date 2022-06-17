@@ -6,6 +6,7 @@ require_once 'models/Fatura.php';
 require_once 'models/Empresa.php';
 require_once 'models/Linha.php';
 require_once 'models/User.php';
+require_once 'models/Iva.php';
 
 class FaturaController extends BaseController
 {
@@ -14,8 +15,8 @@ class FaturaController extends BaseController
         $base = new BaseAuthController();
 
         if ($base->userData(2) == 'cliente') {
-            $fatura = Fatura::find(array("conditions" => array("cliente_id = ?", $base->userData(1))));
-            $users = User::find([$base->userData(1)]);
+            $fatura = Fatura::find('all', array("conditions" => array("cliente_id = ?", $base->userData(1))));
+            $users = User::all();
         } else {
             $fatura = Fatura::all();
             $users = User::all();
@@ -27,11 +28,17 @@ class FaturaController extends BaseController
     public function show($id)
     {
         $fatura = Fatura::find([$id]);
+        $cliente = User::find([$fatura->cliente_id]);
+        $funcionario = User::find([$fatura->funcionario_id]);
+        $produto = Produto::all();
+        $iva = Iva::all();
+        $empresa = Empresa::first();
+        $linhas = Linha::all(array("conditions" => array("fatura_id = ?", $id)));
+
         if (is_null($fatura)) {
             $this->redirectToRoute('home/erro'); //TODO: rework pg erro
         } else {
-            //$this->renderView('fatura/imprimir.php', ['faturaDetails' => $fatura]);
-            require_once 'views/fatura/print.php';
+            $this->renderView('fatura/print.php', ['fatura' => $fatura, 'empresa' => $empresa, 'produto' => $produto, 'linhas' => $linhas, 'funcionario' => $funcionario, 'cliente' => $cliente, 'iva' => $iva]);
         }
     }
 
