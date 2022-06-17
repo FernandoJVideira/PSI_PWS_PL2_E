@@ -10,9 +10,10 @@ class FaturaController extends BaseController
     public function index()
     {
         $base = new BaseAuthController();
+
         if ($base->userData(2) == 'cliente') {
             $fatura = Fatura::find(array("conditions" => array("cliente_id = ?", $base->userData(1))));
-            $users = User::all([$base->userData(1)]);
+            $users = User::find([$base->userData(1)]);
         } else {
             $fatura = Fatura::all();
             $users = User::all();

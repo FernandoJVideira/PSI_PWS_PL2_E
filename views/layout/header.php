@@ -47,6 +47,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="router.php?r=fatura/index">Gerir Faturas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="router.php?r=empresa/index">Gerir Empresa</a>
+                        </li>
                     <?php } else if ($auth->isLoggedIn() && $_SESSION['login'][2] == 'cliente') { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="router.php?r=fatura/index">Ver Faturas</a>

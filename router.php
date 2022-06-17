@@ -8,6 +8,7 @@ require_once 'controllers/IvaController.php';
 require_once 'controllers/FaturaController.php';
 require_once 'controllers/ProdutoController.php';
 require_once 'controllers/LinhaController.php';
+require_once 'controllers/EmpresaController.php';
 
 $auth = new AuthController();
 $home = new HomeController();
@@ -16,6 +17,7 @@ $product = new ProdutoController();
 $iva = new IvaController();
 $linha = new LinhaController();
 $fatura = new FaturaController();
+$empresa = new EmpresaController();
 
 $route = '';
 
@@ -126,6 +128,16 @@ switch ($route) {
         break;
     case 'fatura/print':
         $fatura->show($id);
+        break;
+        //Empresa
+    case 'empresa/index':
+        $empresa->index();
+        break;
+    case 'empresa/edit':
+        $empresa->edit($id);
+        break;
+    case 'empresa/update':
+        $empresa->update($id);
         break;
         //Home
     case 'home/erro':

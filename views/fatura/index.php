@@ -44,25 +44,44 @@
                         </th>
                     </thead>
                     <tbody>
-                        <?php foreach ($faturas as $fatura) { ?>
+                        <?php
+                        if (is_array($users)) {
+                            foreach ($faturas as $fatura) { ?>
 
-                            <tr>
-                                <td><?= $users[array_search($fatura->cliente_id, array_column($users, 'id'))]->username ?></td>
-                                <td><?= $users[array_search($fatura->funcionario_id, array_column($users, 'id'))]->username ?></td>
-                                <td><?= $fatura->data->format('d-m-Y') ?></td>
-                                <td><?= $fatura->valor_preco_total + $fatura->valor_iva_total ?>€ (<?= $fatura->valor_iva_total ?>€)</td>
+                                <tr>
+                                    <td><?= $users[array_search($fatura->cliente_id, array_column($users, 'id'))]->username ?></td>
+                                    <td><?= $users[array_search($fatura->funcionario_id, array_column($users, 'id'))]->username ?></td>
+                                    <td><?= $fatura->data->format('d-m-Y') ?></td>
+                                    <td><?= $fatura->valor_preco_total + $fatura->valor_iva_total ?>€ (<?= $fatura->valor_iva_total ?>€)</td>
+                                    <td>
+                                        <?php
+                                        if ($fatura->estado == "0" && $_SESSION['login'][2] != 'cliente') { ?>
+                                            <a href="router.php?r=fatura/emitir&id=<?= $fatura->id ?>" class="btn btn-success" role="button">Emitir</a>
+                                            <a href="router.php?r=fatura/edit&id=<?= $fatura->id ?>" class="btn btn-info" role="button">Edit</a>
+                                            <a href="router.php?r=fatura/delete&id=<?= $fatura->id ?>" class="btn btn-warning" role="button">Delete</a>
+                                        <?php } else { ?>
+                                            <a href="router.php?r=fatura/print&id=<?= $fatura->id ?>" class="btn btn-success" role="button">Visualizar</a>
+                                        <?php } ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        <?php } else { ?><tr>
+                                <td><?= $users->username ?></td>
+                                <td><?= $users->username ?></td>
+                                <td><?= $faturas->data->format('d-m-Y') ?></td>
+                                <td><?= $faturas->valor_preco_total + $faturas->valor_iva_total ?>€ (<?= $faturas->valor_iva_total ?>€)</td>
                                 <td>
                                     <?php
-                                    if ($fatura->estado == "0" && $_SESSION['login'][2] != 'cliente') { ?>
-                                        <a href="router.php?r=fatura/emitir&id=<?= $fatura->id ?>" class="btn btn-success" role="button">Emitir</a>
-                                        <a href="router.php?r=fatura/edit&id=<?= $fatura->id ?>" class="btn btn-info" role="button">Edit</a>
-                                        <a href="router.php?r=fatura/delete&id=<?= $fatura->id ?>" class="btn btn-warning" role="button">Delete</a>
+                                    if ($faturas->estado == "0" && $_SESSION['login'][2] != 'cliente') { ?>
+                                        <a href="router.php?r=fatura/emitir&id=<?= $faturas->id ?>" class="btn btn-success" role="button">Emitir</a>
+                                        <a href="router.php?r=fatura/edit&id=<?= $faturas->id ?>" class="btn btn-info" role="button">Edit</a>
+                                        <a href="router.php?r=fatura/delete&id=<?= $faturas->id ?>" class="btn btn-warning" role="button">Delete</a>
                                     <?php } else { ?>
-                                        <a href="router.php?r=fatura/print&id=<?= $fatura->id ?>" class="btn btn-success" role="button">Visualizar</a>
+                                        <a href="router.php?r=fatura/print&id=<?= $faturas->id ?>" class="btn btn-success" role="button">Visualizar</a>
                                     <?php } ?>
                                 </td>
                             </tr>
-                        <?php } ?>
+                            <?php } ?>
                     </tbody>
                 </table>
             <?php } else {  ?>
